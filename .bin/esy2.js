@@ -6,8 +6,7 @@ const path = require('path');
 const packageResolve = require('resolve');
 
 type scope =
-|
-"export"
+| "export"
 | "global"
 | "local";
 
@@ -172,7 +171,26 @@ function createBuildTask({pathName, module}) {
     const childBuildTasks = module.deps.map(m => createBuildTask({pathName: null, module: m})).join('');
     const buildDeps = module.deps.map(m => m.name);
     let buildTask = childBuildTasks + (buildDeps.length ? module.name + ' : ' + buildDeps.join(' ') : module.name) + '\n';
-    buildTask += module.runtimeEnvVars.map(envVar => '\texport ' + envVar.key + '=' + envVar.value).join('\n') + '\n\t' + module.build + '\n\n';
+    buildTask += '\t# Built-in environment variables\n';
+    buildTask += '\texport ' + module.name + '_name=' + module.name + '\n';
+    buildTask += '\texport ' + module.name + '_version=' + module.version + '\n';
+    buildTask += '\texport ' + module.name + '__target_dir=.\n';
+    buildTask += '\texport ' + module.name + '__install=_install/\n';
+    buildTask += '\texport ' + module.name + '__root=sandbox/\n';
+    buildTask += '\texport ' + module.name + '__depends=[' + buildDeps.toString() + ']\n';
+    buildTask += '\texport ' + module.name + '__bin=sandbox/' +  module.name + '/bin\n';
+    buildTask += '\texport ' + module.name + '__sbin=sandbox/' +  module.name + '/sbin\n';
+    buildTask += '\texport ' + module.name + '__lib=sandbox/' +  module.name + '/lib\n';
+    buildTask += '\texport ' + module.name + '__man=sandbox/' +  module.name + '/man\n';
+    buildTask += '\texport ' + module.name + '__doc=sandbox/' +  module.name + '/doc\n';
+    buildTask += '\texport ' + module.name + '__stublibs=sandbox/' +  module.name + '/stublibs\n';
+    buildTask += '\texport ' + module.name + '__toplevel=sandbox/' +  module.name + '/toplevel\n';
+    buildTask += '\texport ' + module.name + '__share=sandbox/' +  module.name + '/share\n';
+    buildTask += '\texport ' + module.name + '__etc=sandbox/' +  module.name + '/etc\n\n';
+    if (module.runtimeEnvVars.length) {
+      buildTask += '\t# Custom environment variables\n';
+      buildTask += module.runtimeEnvVars.map(envVar => '\texport ' + envVar.key + '=' + envVar.value).join('\n') + '\n\n\t./' + module.build + '\n\n';
+    }
     if (pathName) {
       buildTask += 'default: ' + module.name;
     }
