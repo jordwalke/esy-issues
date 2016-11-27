@@ -27,7 +27,8 @@ type npmModule = {
 type esyEnvVar = {
   key: string,
   value: string,
-  scope: [scope]
+  scope: [scope],
+  owner: string
 };
 
 type esyPackage = {
@@ -95,7 +96,7 @@ function resolvePackageJSON(pathName) {
           build: pack.build,
           version: pack.version,
           exportedEnvVars: packEnvVars ? Object.keys(packEnvVars).map(
-            key => ({key: key, scope: packEnvVars[key].scope ? packEnvVars[key].scope.split('|') : [], value: packEnvVars[key].val})
+            key => ({key: key, owner: pack.name, scope: packEnvVars[key].scope ? packEnvVars[key].scope.split('|') : [], value: packEnvVars[key].val})
           ) : [],
           runtimeEnvVars: [],
           dependencies: pack.dependencies,
@@ -110,6 +111,9 @@ function resolvePackageJSON(pathName) {
               let envVars = module.deps.map(pack => pack.exportedEnvVars);
               if (envVars.length) {
                 envVars = envVars.reduce((a, b) => a.concat(b));
+              }
+              else {
+                envVars = [];
               }
               const exportedEnvVars = envVars.filter(envVar => envVar.scope.includes('export'));
               const globalEnvVars2 = globalEnvVars.concat(envVars.filter(envVar => envVar.scope.includes('global')));
@@ -164,13 +168,24 @@ function printCurrentSandBox({pathName, module}) {
   console.log(util.inspect(module, {showHidden: false, depth: null}))
 }
 
+function createFindlibMetaFile() {
+
+}
+
+function createFindlibConfigFile() {
+
+}
+
 const processedBuildTasks: _visitedDependencies = {};
+const obfuscateKey = '__esy_scope__' + Date.now(); // wow such smart tactics
 function createBuildTask({pathName, module}) {
   if (!processedBuildTasks[module.name]) {
     processedBuildTasks[module.name] = true;
     const childBuildTasks = module.deps.map(m => createBuildTask({pathName: null, module: m})).join('');
     const buildDeps = module.deps.map(m => m.name);
     let buildTask = childBuildTasks + (buildDeps.length ? module.name + ' : ' + buildDeps.join(' ') : module.name) + '\n';
+
+    //
     buildTask += '\t# Built-in environment variables\n';
     buildTask += '\texport ' + module.name + '_name=' + module.name + '\n';
     buildTask += '\texport ' + module.name + '_version=' + module.version + '\n';
@@ -187,13 +202,36 @@ function createBuildTask({pathName, module}) {
     buildTask += '\texport ' + module.name + '__toplevel=sandbox/' +  module.name + '/toplevel\n';
     buildTask += '\texport ' + module.name + '__share=sandbox/' +  module.name + '/share\n';
     buildTask += '\texport ' + module.name + '__etc=sandbox/' +  module.name + '/etc\n\n';
-    if (module.runtimeEnvVars.length) {
-      buildTask += '\t# Custom environment variables\n';
-      buildTask += module.runtimeEnvVars.map(envVar => '\texport ' + envVar.key + '=' + envVar.value).join('\n') + '\n\n\t./' + module.build + '\n\n';
+
+    const importedEnvVars = module.runtimeEnvVars.filter(envVar => envVar.scope.includes('global') || envVar.scope.includes('export'));
+    const exportedEnvVars = module.exportedEnvVars;
+    const localEnvVars = module.exportedEnvVars.filter(envVar => envVar.scope.includes('local'));
+
+    if (exportedEnvVars.length) {
+      buildTask += '\t# Exported environment variabless\n';
+      buildTask += exportedEnvVars.map(envVar => '\texport ' + envVar.owner + '__' + envVar.key + '__' + obfuscateKey + '=' + envVar.value).join('\n') + '\n\n';
     }
+
+    if (importedEnvVars.length) {
+      buildTask += '\t# Environment variables coming from dependencies\n';
+      buildTask += importedEnvVars.map(envVar => '\texport ' + envVar.key + '=$' + envVar.owner + '__' + envVar.key + '__' + obfuscateKey).join('\n') + '\n\n';
+    }
+
+    if (module.build) {
+      buildTask += '\t# Build command\n';
+      buildTask += '\t./' + module.build + '\n\n';
+    }
+
+    if (importedEnvVars.length) {
+      buildTask += '\t# Reset imported environment variables\n';
+      buildTask += importedEnvVars.map(envVar => '\tunset ' + envVar.key).join('\n') + '\n\n';
+    }
+
     if (pathName) {
+      buildTask += '\t#TODO: Reset all other variables\n\n';
       buildTask += 'default: ' + module.name;
     }
+
     return buildTask;
   }
   else {
