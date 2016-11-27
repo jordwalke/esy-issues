@@ -203,7 +203,7 @@ function createBuildTask({pathName, module}) {
     buildTask += '\texport ' + module.name + '__share=sandbox/' +  module.name + '/share\n';
     buildTask += '\texport ' + module.name + '__etc=sandbox/' +  module.name + '/etc\n\n';
 
-    const importedEnvVars = module.runtimeEnvVars.filter(envVar => envVar.scope.includes('global') || envVar.scope.includes('export'));
+    const importedEnvVars = module.runtimeEnvVars;
     const exportedEnvVars = module.exportedEnvVars;
     const localEnvVars = module.exportedEnvVars.filter(envVar => envVar.scope.includes('local'));
 
