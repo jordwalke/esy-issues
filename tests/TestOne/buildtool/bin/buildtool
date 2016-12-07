@@ -6,7 +6,7 @@
 
 DEPENDS=""
 for p in $cur__depends; do
-  if [ "$p" != "buildtool" ]; then
+  if [ "$p" != "buildtool" ] -a [ "$p" != "ocaml" ]; then
     DEPENDS="$DEPENDS $p"
   fi
 done
@@ -62,7 +62,7 @@ EOF
 
 echo "Install location: $cur__install"
 
-mkdir -p $cur__install
+mkdir -p $cur__install/lib
 
 ocamlfind install $cur__name \
   "$cur__target_dir"/lib/META \

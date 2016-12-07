@@ -48,6 +48,15 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
     },
     {
       type: 'rule',
+      name: '*** Shell sandbox ***',
+      target: 'shell',
+      dependencies: [`${packageDb.rootPackageName}--shell`],
+      env: [],
+      exportEnv: [],
+      command: null,
+    },
+    {
+      type: 'rule',
       name: '*** Remove build artifacts ***',
       target: 'clean',
       dependencies: [],
@@ -73,6 +82,15 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
     (packageJsonFilePath, packageJson) => {
 
       let dependencies = collectTransitiveDependencies(packageDb, packageJson.name);
+
+        let buildEnvironment = getBuildEnv(packageDb, packageJson.name);
+        let exportedEnvironment = PackageEnvironment.calculateEnvironment(
+          packageDb,
+          packageJson.name
+        );
+        for (let group of exportedEnvironment) {
+          buildEnvironment = buildEnvironment.concat(envToEnvList(group));
+        }
 
       let findlibPath = dependencies
         .map(dep => installDir(dep, 'lib'))
@@ -110,16 +128,18 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
         `.trim(),
       });
 
+      rules.push({
+        type: 'rule',
+        name: `*** ${packageJson.name} shell ***`,
+        target: `${packageJson.name}--shell`,
+        dependencies: [],
+        exportEnv: ['ESY__SANDBOX'],
+        env: buildEnvironment,
+        command: `(cd $cur__root && $SHELL)`,
+      });
+
       if (packageJson.pjc && packageJson.pjc.build) {
         let buildCommand = packageJson.pjc.build;
-        let buildEnvironment = getBuildEnv(packageDb, packageJson.name);
-        let exportedEnvironment = PackageEnvironment.calculateEnvironment(
-          packageDb,
-          packageJson.name
-        );
-        for (let group of exportedEnvironment) {
-          buildEnvironment = buildEnvironment.concat(envToEnvList(group));
-        }
         let dependencies = [
           `${packageJson.name}__findlib.conf`
         ];
@@ -133,7 +153,7 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
           dependencies: dependencies,
           exportEnv: ['ESY__SANDBOX'],
           env: buildEnvironment,
-          command: buildCommand,
+          command: `(cd $cur__root && ${buildCommand})`,
         });
       } else {
         // TODO: Returning an empty rule. Is that really what we want here?
@@ -184,43 +204,43 @@ function getPkgEnv(packageDb, packageName, asCurrent = false) {
     },
     {
       name: `${prefix}__install`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/lib`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}`,
     },
     {
       name: `${prefix}__bin`,
-      value: `$esy__install_tree/${packageJson.name}/bin`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/bin`,
     },
     {
       name: `${prefix}__sbin`,
-      value: `$esy__install_tree/${packageJson.name}/sbin`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/sbin`,
     },
     {
       name: `${prefix}__lib`,
-      value: `$esy__install_tree/${packageJson.name}/lib`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/lib`,
     },
     {
       name: `${prefix}__man`,
-      value: `$esy__install_tree/${packageJson.name}/man`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/man`,
     },
     {
       name: `${prefix}__doc`,
-      value: `$esy__install_tree/${packageJson.name}/doc`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/doc`,
     },
     {
       name: `${prefix}__stublibs`,
-      value: `$esy__install_tree/${packageJson.name}/stublibs`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/stublibs`,
     },
     {
       name: `${prefix}__toplevel`,
-      value: `$esy__install_tree/${packageJson.name}/toplevel`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/toplevel`,
     },
     {
       name: `${prefix}__share`,
-      value: `$esy__install_tree/${packageJson.name}/share`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/share`,
     },
     {
       name: `${prefix}__etc`,
-      value: `$esy__install_tree/${packageJson.name}/etc`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/etc`,
     },
   ];
 }
