@@ -3,7 +3,7 @@
  */
 
 import type {PackageDb} from '../lib/PackageDb';
-import type {MakeDefine, MakeRule} from '../lib/Makefile';
+import type {MakeRawItem, MakeDefine, MakeRule} from '../lib/Makefile';
 
 const childProcess = require('child_process');
 const path = require('path');
@@ -37,15 +37,34 @@ function envToEnvList(env) {
 function buildCommand(packageDb: PackageDb, args: Array<string>) {
 
   let rules: Array<MakeRule> = [
-
+    {
+      type: 'rule',
+      name: '*** Build sandbox ***',
+      target: 'build',
+      dependencies: [packageDb.rootPackageName],
+      env: [],
+      exportEnv: [],
+      command: null,
+    },
+    {
+      type: 'rule',
+      name: '*** Remove build artifacts ***',
+      target: 'clean',
+      dependencies: [],
+      env: [],
+      exportEnv: [],
+      command: 'rm -rf $(ESY__SANDBOX)/_build $(ESY__SANDBOX)/_install',
+    },
   ];
 
-  let prelude: Array<MakeDefine> = [
+  let prelude: Array<MakeDefine | MakeRawItem> = [
     {
-      type: 'define',
-      name: 'ESY__SANDBOX',
-      value: '$(PWD)',
-      assignment: '?=',
+      type: 'raw',
+      value: 'SHELL = /bin/bash',
+    },
+    {
+      type: 'raw',
+      value: 'ESY__SANDBOX ?= $(PWD)',
     },
   ];
 

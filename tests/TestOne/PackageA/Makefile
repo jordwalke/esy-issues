@@ -1,10 +1,7 @@
-SHELL=/bin/bash
+SHELL = /bin/bash
 
-build: node_modules
-	@$(MAKE) -f <(../../../.bin/esy build) PackageA
+build clean: node_modules
+	@$(MAKE) -f <(../../../.bin/esy build) $@
 
 node_modules:
 	sh ./test.sh
-
-clean:
-	rm -rf _build _install
