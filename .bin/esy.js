@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const esyEnv = require('./esyEnv.js');
+const PackageEnvironment = require('../lib/PackageEnvironment');
 const PackageDb = require('../lib/PackageDb');
 
 /**
@@ -144,13 +144,16 @@ var builtInCommands = {
 var actualArgs = process.argv.slice(2);
 
 const packageDb = PackageDb.fromDirectory(curDir);
-let envForThisPackageScripts = esyEnv.getRelativizedEnv(packageDb, curDir);
+let envForThisPackageScripts = PackageEnvironment.calculateEnvironment(
+  packageDb,
+  packageDb.rootPackageName
+);
 
 if (actualArgs.length === 0) {
   // It's just a status command. Print the command that would be
   // used to setup the environment along with status of
   // the build processes, staleness, package validity etc.
-  console.log(esyEnv.print(envForThisPackageScripts));
+  console.log(PackageEnvironment.printEnvironment(envForThisPackageScripts));
 } else {
   var builtInCommand = builtInCommands[actualArgs[0]];
   if (builtInCommand) {
