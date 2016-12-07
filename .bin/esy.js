@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var esyEnv = require('./esyEnv.js');
-
+const esyEnv = require('./esyEnv.js');
+const PackageDb = require('../lib/PackageDb');
 
 /**
  * Each package can configure exportedEnvVars with:
@@ -143,7 +143,9 @@ var builtInCommands = {
 };
 var actualArgs = process.argv.slice(2);
 
-let envForThisPackageScripts = esyEnv.getRelativizedEnv(curDir, curDir);
+const packageDb = PackageDb.fromDirectory(curDir);
+let envForThisPackageScripts = esyEnv.getRelativizedEnv(packageDb, curDir);
+
 if (actualArgs.length === 0) {
   // It's just a status command. Print the command that would be
   // used to setup the environment along with status of
@@ -157,4 +159,3 @@ if (actualArgs.length === 0) {
     let command = actualArgs.join(' ');
   }
 }
- 

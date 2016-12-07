@@ -32,5 +32,9 @@
   "homepage": "https://github.com/jordwalke/esy#readme",
   "engines": {
     "npm": ">=3.10.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.36.0",
+    "flow-remove-types": "^1.0.5"
   }
 }

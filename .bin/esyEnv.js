@@ -1,21 +1,33 @@
 #!/usr/bin/env node
+/**
+ * @flow
+ */
 
-var path = require('path');
-var pathIsInside = require('path-is-inside');
-var resolve = require('resolve');
-var path = require('path');
-var fs = require('fs');
-var os = require('os');
+import type {PackageDb, PackageJson} from '../lib/PackageDb';
+
+const path = require('path');
+const pathIsInside = require('path-is-inside');
+const fs = require('fs');
+const os = require('os');
+const {traversePackageDb} = require('../lib/PackageDb');
+
+export type EnvGroup = {
+  packageJsonPath: string;
+  packageJson: PackageJson;
+  envVars: Array<{
+    name: string;
+    normalizedVal: string;
+    automaticDefault: boolean;
+  }>;
+  errors: Array<string>;
+};
+
 // X platform newline
-var EOL = os.EOL;
-var delim = path.delimiter;
-const KEYS = [
-  'dependencies',
-  'peerDependencies',
-];
-var globalGroups = [];
-var globalVisitedRealPaths = {};
-var globalSeenVars = {};
+const EOL = os.EOL;
+const delim = path.delimiter;
+
+let globalGroups = [];
+let globalSeenVars = {};
 
 function extend(o, more) {
   var next = {};
@@ -67,62 +79,6 @@ let relativeToSandbox = (realFromPath, toPath) => {
   let ret = path.relative(realFromPath, toPathToUse);
   return (ret == 0) ? "$ESY__SANDBOX" : path.join("$ESY__SANDBOX", ret);
 };
-
-function resolveDep(dependency, basedir) {
-  try {
-    return resolve.sync(
-      path.join(dependency, 'package.json'),
-      {basedir: dir}
-    );
-  } catch (err) { }
-  throw "cannot find " + dependency + " in " + dirs;
-}
-
-function traverseSync(packageJsonPathOnEjectingHost, handler) {
-  const packageJsonPathOnEjectingHostRealPath = fs.realpathSync(packageJsonPathOnEjectingHost);
-  const pkg = JSON.parse(fs.readFileSync(packageJsonPathOnEjectingHost, 'utf8'));
-  if (!pkg.name) {
-    throw ("no package name for package:" + packageJsonPathOnEjectingHost);
-  }
-  globalVisitedRealPaths[pkg.name] = packageJsonPathOnEjectingHostRealPath;
-  /**
-   * How about the convention that `buildTimeOnlyDependencies` won't be
-   * traversed transitively to compute environments. The primary use case is
-   * that we generally only need a binary produced - or a dll.
-   */
-  KEYS.forEach(function(key) {
-    Object.keys(
-      pkg[key] || {}
-    ).forEach(function(dependencyName) {
-        try {
-          const resolved = resolve.sync(
-            path.join(dependencyName, 'package.json'),
-            {basedir: path.dirname(packageJsonPathOnEjectingHost)}
-          );
-          if (!globalVisitedRealPaths[dependencyName]) {
-            traverseSync(resolved, handler);
-          } else {
-            if (globalVisitedRealPaths[dependencyName] !== fs.realpathSync(resolved)) {
-              // Find a way to aggregate warnings.
-              // console.warn(
-              //   "While computing environment for " + pkg.name + ", found that there are two separate packages named " +
-              //     dependencyName + " at two different real paths on disk. One is at " +
-              //     globalVisitedRealPaths[dependencyName] + " and the other at " + fs.realpathSync(resolved)
-              // );
-            }
-          }
-        } catch (err) {
-          // We are forgiving on optional dependencies -- if we can't find them,
-          // just skip them
-          if (pkg["optionalDependencies"] && pkg["optionalDependencies"][dependencyName]) {
-            return;
-          }
-          throw err;
-        }
-    });
-  });
-  handler(packageJsonPathOnEjectingHost, pkg);
-}
 
 function getScopes(config) {
   if (!config.scope) {
@@ -265,36 +221,75 @@ function computeEnvVarsForPackage(realPathSandboxRootOnEjectingHost, packageJson
   })
 }
 
-
 /**
  * For a given *real* physical, absolute path on *this* host
  * (`realPathSandboxRootOnEjectingHost`), compute the environment
  * variable setup in terms of a hypothetical root
  */
-exports.getRelativizedEnv = (realPathSandboxRootOnEjectingHost, currentlyBuildingPackageRoot) => {
+exports.getRelativizedEnv = (
+  packageDb: PackageDb,
+  currentlyBuildingPackageRoot: string
+) => {
   /**
    * The root package.json path on the "ejecting host" - that is, the host where
    * the universal build script is being computed. Everything else should be
    * relative to this.
    */
-  var curRootPackageJsonOnEjectingHost = path.join(realPathSandboxRootOnEjectingHost, 'package.json');
-  globalVisitedRealPaths = {};
+  let curRootPackageJsonOnEjectingHost = path.join(packageDb.path, 'package.json');
   globalSeenVars = {};
+
   function setUpBuiltinVariables(seenVars, errors, normalizedEnvVars) {
-    var sandboxExportedEnvVars = {
+    let sandboxExportedEnvVars = {
+
     };
-    let {seenVars: nextSeenVars, errors:nextErrors, normalizedEnvVars:nextNormalizedEnvVars} =
-      addEnvConfigForPackage(seenVars, errors, normalizedEnvVars, realPathSandboxRootOnEjectingHost, "EsySandBox", curRootPackageJsonOnEjectingHost, sandboxExportedEnvVars);
-    var currentlyBuildingExportedEnvVars = builtInsPerPackage(realPathSandboxRootOnEjectingHost, 'CUR__', currentlyBuildingPackageRoot);
-    let {seenVars: nextNextSeenVars, errors:nextNextErrors, normalizedEnvVars: nextNextNormalizedEnvVars} =
-      addEnvConfigForPackage(nextSeenVars, nextErrors, nextNormalizedEnvVars, realPathSandboxRootOnEjectingHost, "EsySandBox", curRootPackageJsonOnEjectingHost, currentlyBuildingExportedEnvVars)
-    return {seenVars: nextNextSeenVars, errors: nextNextErrors, normalizedEnvVars: nextNextNormalizedEnvVars};
+
+    let {
+      seenVars: nextSeenVars,
+      errors: nextErrors,
+      normalizedEnvVars: nextNormalizedEnvVars
+    } = addEnvConfigForPackage(
+      seenVars,
+      errors,
+      normalizedEnvVars,
+      packageDb.path,
+      "EsySandBox",
+      curRootPackageJsonOnEjectingHost,
+      sandboxExportedEnvVars
+    );
+    let currentlyBuildingExportedEnvVars = builtInsPerPackage(
+      packageDb.path,
+      'CUR__', currentlyBuildingPackageRoot
+    );
+    let {
+      seenVars: nextNextSeenVars,
+      errors: nextNextErrors,
+      normalizedEnvVars: nextNextNormalizedEnvVars,
+    } = addEnvConfigForPackage(
+      nextSeenVars,
+      nextErrors,
+      nextNormalizedEnvVars,
+      packageDb.path,
+      "EsySandBox",
+      curRootPackageJsonOnEjectingHost,
+      currentlyBuildingExportedEnvVars
+    );
+    return {
+      seenVars: nextNextSeenVars,
+      errors: nextNextErrors,
+      normalizedEnvVars: nextNextNormalizedEnvVars
+    };
   }
+
   try {
-    let {seenVars, errors, normalizedEnvVars} = setUpBuiltinVariables(globalSeenVars, [], []);
+    let {
+      seenVars,
+      errors,
+      normalizedEnvVars
+    } = setUpBuiltinVariables(globalSeenVars, [], []);
 
     /**
-     * Update the global. Sadly, haven't thread it through the traverseSync.
+     * Update the global. Sadly, haven't thread it through the
+     * traversePackageTree.
      */
     globalSeenVars = seenVars;
     globalGroups = [{
@@ -303,7 +298,10 @@ exports.getRelativizedEnv = (realPathSandboxRootOnEjectingHost, currentlyBuildin
       envVars: normalizedEnvVars,
       errors: errors
     }];
-    traverseSync(curRootPackageJsonOnEjectingHost, computeEnvVarsForPackage.bind(null, realPathSandboxRootOnEjectingHost));
+    traversePackageDb(
+      packageDb,
+      computeEnvVarsForPackage.bind(null, packageDb.path)
+    );
   } catch (err) {
     if (err.code === 'ENOENT') {
       console.error("Fail to find package.json!: " + err.message);
@@ -313,14 +311,14 @@ exports.getRelativizedEnv = (realPathSandboxRootOnEjectingHost, currentlyBuildin
   }
 
   var ret = globalGroups;
+
   globalGroups = [];
-  errors = [];
-  globalVisitedRealPaths = {};
   globalSeenVars = {};
+
   return ret;
 };
 
-exports.print = (groups) => {
+exports.print = (groups: Array<EnvGroup>) => {
   return groups.map(function(group) {
     let headerLines = [
       '',
@@ -346,11 +344,6 @@ exports.print = (groups) => {
     return headerLines.concat(errorLines).concat(envVarLines).join(EOL);
   }).join(EOL);
 };
-
-exports.loadIntoProcess = (groups) => {
-
-};
-
 
 /**
  * TODO: Cache this result on disk in a .reasonLoadEnvCache so that we don't

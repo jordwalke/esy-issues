@@ -25,7 +25,8 @@ SCRIPTDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 # Capture the error output
 # Capturing stderr is very important to prevent nodejs from setting
 # stderr to nonblocking mode
-SETENVCMD=$($SCRIPTDIR/esy.js "$@" $CURDIR 2>&1)
+NODE=$SCRIPTDIR/../node_modules/.bin/flow-node
+SETENVCMD=$($NODE $SCRIPTDIR/esy.js "$@" $CURDIR 2>&1)
 if [ $? -ne 0 ]; then
     echo "Failed to get dependency:"
     printf "%s\n" "$SETENVCMD" >&2
