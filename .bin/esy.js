@@ -128,36 +128,33 @@ const PackageDb = require('../lib/PackageDb');
  *  true/false flag and it doesn't take into account scope.
  */
 
-/**
- * Need to change this to climb to closest package.json.
- */
-var curDir = process.cwd();
-
-var builtInCommands = {
-  "build": function(env, args) {
+const builtInCommands = {
+  "build": function(...args) {
     var build = require('./esyBuildCommand');
-    build(curDir, env, args);
+    build(...args);
   },
   "shell": true,
   "deshell": true
 };
-var actualArgs = process.argv.slice(2);
 
+// TODO: Need to change this to climb to closest package.json.
+const curDir = process.cwd();
+const actualArgs = process.argv.slice(2);
 const packageDb = PackageDb.fromDirectory(curDir);
-let envForThisPackageScripts = PackageEnvironment.calculateEnvironment(
-  packageDb,
-  packageDb.rootPackageName
-);
 
 if (actualArgs.length === 0) {
   // It's just a status command. Print the command that would be
   // used to setup the environment along with status of
   // the build processes, staleness, package validity etc.
+  let envForThisPackageScripts = PackageEnvironment.calculateEnvironment(
+    packageDb,
+    packageDb.rootPackageName
+  );
   console.log(PackageEnvironment.printEnvironment(envForThisPackageScripts));
 } else {
   var builtInCommand = builtInCommands[actualArgs[0]];
   if (builtInCommand) {
-    builtInCommand(envForThisPackageScripts, process.argv.slice(3));
+    builtInCommand(packageDb, process.argv.slice(3));
   } else {
     let command = actualArgs.join(' ');
   }
