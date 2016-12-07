@@ -136,72 +136,72 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
   console.log(Makefile.renderMakefile(allRules));
 }
 
-function getPkgEnv(packageDb, packageName, current = false) {
+function getPkgEnv(packageDb, packageName, asCurrent = false) {
   let {packageJson, packageJsonFilePath} = packageDb.packagesByName[packageName];
-  let prefix = current ? 'cur' : (packageJson.name + '_');
+  let prefix = asCurrent ? 'cur' : packageJson.name;
   return [
     {
-      name: `${prefix}_name`,
+      name: `${prefix}__name`,
       value: packageJson.name,
     },
     {
-      name: `${prefix}_version`,
+      name: `${prefix}__version`,
       value: packageJson.version,
     },
     {
-      name: `${prefix}_root`,
+      name: `${prefix}__root`,
       value: path.dirname(packageJsonFilePath),
     },
     {
-      name: `${prefix}_depends`,
+      name: `${prefix}__depends`,
       value: packageJson.dependencies != null
         // TODO: handle peerDependencies / optionalDependencies
         ? `"${Object.keys(packageJson.dependencies).join(' ')}"`
         : null,
     },
     {
-      name: `${prefix}_target_dir`,
-      value: `$_build_tree/node_modules/${packageJson.name}`,
+      name: `${prefix}__target_dir`,
+      value: `$esy__build_tree/node_modules/${packageJson.name}`,
     },
     {
-      name: `${prefix}_install`,
-      value: `$_install_tree/node_modules/${packageJson.name}/lib`,
+      name: `${prefix}__install`,
+      value: `$esy__install_tree/node_modules/${packageJson.name}/lib`,
     },
     {
-      name: `${prefix}_bin`,
-      value: `$_install_tree/${packageJson.name}/bin`,
+      name: `${prefix}__bin`,
+      value: `$esy__install_tree/${packageJson.name}/bin`,
     },
     {
-      name: `${prefix}_sbin`,
-      value: `$_install_tree/${packageJson.name}/sbin`,
+      name: `${prefix}__sbin`,
+      value: `$esy__install_tree/${packageJson.name}/sbin`,
     },
     {
-      name: `${prefix}_lib`,
-      value: `$_install_tree/${packageJson.name}/lib`,
+      name: `${prefix}__lib`,
+      value: `$esy__install_tree/${packageJson.name}/lib`,
     },
     {
-      name: `${prefix}_man`,
-      value: `$_install_tree/${packageJson.name}/man`,
+      name: `${prefix}__man`,
+      value: `$esy__install_tree/${packageJson.name}/man`,
     },
     {
-      name: `${prefix}_doc`,
-      value: `$_install_tree/${packageJson.name}/doc`,
+      name: `${prefix}__doc`,
+      value: `$esy__install_tree/${packageJson.name}/doc`,
     },
     {
-      name: `${prefix}_stublibs`,
-      value: `$_install_tree/${packageJson.name}/stublibs`,
+      name: `${prefix}__stublibs`,
+      value: `$esy__install_tree/${packageJson.name}/stublibs`,
     },
     {
-      name: `${prefix}_toplevel`,
-      value: `$_install_tree/${packageJson.name}/toplevel`,
+      name: `${prefix}__toplevel`,
+      value: `$esy__install_tree/${packageJson.name}/toplevel`,
     },
     {
-      name: `${prefix}_share`,
-      value: `$_install_tree/${packageJson.name}/share`,
+      name: `${prefix}__share`,
+      value: `$esy__install_tree/${packageJson.name}/share`,
     },
     {
-      name: `${prefix}_etc`,
-      value: `$_install_tree/${packageJson.name}/etc`,
+      name: `${prefix}__etc`,
+      value: `$esy__install_tree/${packageJson.name}/etc`,
     },
   ];
 }
@@ -217,20 +217,20 @@ function getBuildEnv(packageDb, packageName) {
 
   pkgEnv = pkgEnv.concat([
     {
-      name: 'sandbox',
+      name: 'esy__sandbox',
       value: '$ESY__SANDBOX',
     },
     {
-      name: '_install_tree',
-      value: '$sandbox/_install',
+      name: 'esy__install_tree',
+      value: '$esy__sandbox/_install',
     },
     {
-      name: '_build_tree',
-      value: '$sandbox/_build',
+      name: 'esy__build_tree',
+      value: '$esy__sandbox/_build',
     },
     {
       name: 'OCAMLFIND_CONF',
-      value: `$_build_tree/node_modules/${name}/findlib.conf`,
+      value: `$esy__build_tree/node_modules/${name}/findlib.conf`,
     },
   ]);
 
@@ -243,8 +243,8 @@ function getBuildEnv(packageDb, packageName) {
     pkgEnv = pkgEnv.concat(
       ...dependencies.map(dep => getPkgEnv(packageDb, dep, false))
     );
-    let depPath = dependencies.map(dep => `$_install_tree/${dep}/bin`).join(':');
-    let depManPath = dependencies.map(dep => `$_install_tree/${dep}/man`).join(':');
+    let depPath = dependencies.map(dep => `$esy__install_tree/${dep}/bin`).join(':');
+    let depManPath = dependencies.map(dep => `$esy__install_tree/${dep}/man`).join(':');
     pkgEnv = pkgEnv.concat([
       {
         name: 'PATH',
