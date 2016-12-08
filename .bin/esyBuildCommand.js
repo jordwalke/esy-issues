@@ -96,13 +96,20 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
         .map(dep => installDir(dep, 'lib'))
         .join(':');
 
+      // Macro
       prelude.push({
         type: 'define',
         name: `${packageJson.name}__FINDLIB_CONF`,
         value: `
-  path = "$(shell ocamlfind printconf path):${findlibPath}"
+  path = "${findlibPath}"
   destdir = "${installDir(packageJson.name, 'lib')}"
         `.trim(),
+      });
+
+      prelude.push({
+        type: 'define',
+        name: `${packageJson.name}__ENV`,
+        value: Makefile.renderEnv(buildEnvironment),
       });
 
       rules.push({
@@ -123,8 +130,8 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
         env: [],
         exportEnv: ['ESY__SANDBOX', `${packageJson.name}__FINDLIB_CONF`],
         command: `
-  mkdir -p $(@D)
-  echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
+mkdir -p $(@D)
+echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
         `.trim(),
       });
 
@@ -134,8 +141,8 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
         target: `${packageJson.name}--shell`,
         dependencies: [],
         exportEnv: ['ESY__SANDBOX'],
-        env: buildEnvironment,
-        command: `(cd $cur__root && $SHELL)`,
+        env: [],
+        command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && $SHELL)`,
       });
 
       if (packageJson.pjc && packageJson.pjc.build) {
@@ -152,8 +159,8 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
           target: packageJson.name,
           dependencies: dependencies,
           exportEnv: ['ESY__SANDBOX'],
-          env: buildEnvironment,
-          command: `(cd $cur__root && ${buildCommand})`,
+          env: [],
+          command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && ${buildCommand})`,
         });
       } else {
         // TODO: Returning an empty rule. Is that really what we want here?
@@ -195,7 +202,7 @@ function getPkgEnv(packageDb, packageName, asCurrent = false) {
       name: `${prefix}__depends`,
       value: packageJson.dependencies != null
         // TODO: handle peerDependencies / optionalDependencies
-        ? `"${Object.keys(packageJson.dependencies).join(' ')}"`
+        ? `${Object.keys(packageJson.dependencies).join(' ')}`
         : null,
     },
     {
