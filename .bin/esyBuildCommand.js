@@ -39,13 +39,19 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
   let rules: Array<MakeRule> = [
     {
       type: 'rule',
-      name: '*** Build sandbox ***',
+      name: '*** Build root package ***',
       target: 'build',
       dependencies: [`${packageDb.rootPackageName}.build`],
     },
     {
       type: 'rule',
-      name: '*** Shell sandbox ***',
+      name: '*** Rebuild root package ***',
+      target: 'rebuild',
+      dependencies: [`${packageDb.rootPackageName}.rebuild`],
+    },
+    {
+      type: 'rule',
+      name: '*** Root package shell ***',
       target: 'shell',
       dependencies: [`${packageDb.rootPackageName}.shell`],
     },
