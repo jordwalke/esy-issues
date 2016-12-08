@@ -141,25 +141,39 @@ echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
         }
         rules.push({
           type: 'rule',
-          target: `${packageJson.name}.build`,
-          dependencies: [installDir(packageJson.name)],
-        });
-        rules.push({
-          type: 'rule',
           name: ` *** Build ${packageJson.name} ***`,
-          target: installDir(packageJson.name),
+          target: `${packageJson.name}.build`,
           dependencies: dependencies,
           exportEnv: ['ESY__SANDBOX'],
-          command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && ${buildCommand})`,
+          command: `
+if [ ! -d "${installDir(packageJson.name)}" ]; then \\
+  $(${packageJson.name}__ENV)\\\n  (cd $cur__root && ${buildCommand}); \\
+fi
+          `.trim(),
+        });
+        rules.push({
+          type: 'rule',
+          name: ` *** Rebuild ${packageJson.name} ***`,
+          target: `${packageJson.name}.rebuild`,
+          dependencies: dependencies,
+          exportEnv: ['ESY__SANDBOX'],
+          command: `
+$(${packageJson.name}__ENV)\\\n(cd $cur__root && ${buildCommand}); \\
+          `.trim(),
         });
       } else {
-        // TODO: Returning an empty rule. Is that really what we want here?
+        let dependencies = packageJson.dependencies != null
+            ? Object.keys(packageJson.dependencies).map(dep => `${dep}.build`)
+            : [];
+        rules.push({
+          type: 'rule',
+          target: `${packageJson.name}.rebuild`,
+          dependencies,
+        });
         rules.push({
           type: 'rule',
           target: `${packageJson.name}.build`,
-          dependencies: packageJson.dependencies != null
-            ? Object.keys(packageJson.dependencies).map(dep => `${dep}.build`)
-            : [],
+          dependencies,
         });
       }
     });

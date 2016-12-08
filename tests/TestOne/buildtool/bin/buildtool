@@ -1,4 +1,4 @@
-#!/bin/bash -e -x
+#!/bin/bash -e
 #
 # This is a very simple pjc-aware ocamlfind-based build tool.
 
@@ -62,6 +62,7 @@ EOF
 
 echo "Install location: $cur__install"
 
+rm -rf $cur__install
 mkdir -p $cur__install/lib
 
 ocamlfind install $cur__name \
