@@ -1,7 +1,9 @@
 SHELL = /bin/bash
 
-build shell clean: node_modules
-	@$(MAKE) -f <(../../../.bin/esy build) $@
+all: build
 
 node_modules:
-	sh ./test.sh
+	@sh ./test.sh
+
+%: node_modules
+	@$(MAKE) -s -f <(../../../.bin/esy build) $@
