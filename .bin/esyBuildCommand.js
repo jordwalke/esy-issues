@@ -11,6 +11,7 @@ const path = require('path');
 const {
   traversePackageDb,
   collectTransitiveDependencies,
+  collectDependencies,
 } = require('../lib/PackageDb');
 const PackageEnvironment = require('../lib/PackageEnvironment');
 const Makefile = require('../lib/Makefile');
@@ -78,7 +79,7 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
     packageDb,
     (packageJsonFilePath, packageJson) => {
 
-      let dependencies = collectTransitiveDependencies(packageDb, packageJson.name);
+      let allDependencies = collectTransitiveDependencies(packageDb, packageJson.name);
 
         let buildEnvironment = getBuildEnv(packageDb, packageJson.name);
         let exportedEnvironment = PackageEnvironment.calculateEnvironment(
@@ -89,7 +90,7 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
           buildEnvironment = buildEnvironment.concat(envToEnvList(group));
         }
 
-      let findlibPath = dependencies
+      let findlibPath = allDependencies
         .map(dep => installDir(dep, 'lib'))
         .join(':');
 
@@ -136,20 +137,19 @@ echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
         command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && $SHELL)`,
       });
 
+      let dependencies = collectDependencies(packageDb, packageJson.name)
+                         .map(dep => `${dep}.build`);
+
       if (packageJson.pjc && packageJson.pjc.build) {
         let buildCommand = packageJson.pjc.build;
-        let dependencies = [
-          `${packageJson.name}.findlib.conf`
-        ];
-        if (packageJson.dependencies) {
-          dependencies = dependencies.concat(
-            Object.keys(packageJson.dependencies).map(dep => `${dep}.build`));
-        }
         rules.push({
           type: 'rule',
           name: ` *** Build ${packageJson.name} ***`,
           target: `${packageJson.name}.build`,
-          dependencies: dependencies,
+          dependencies: [
+            `${packageJson.name}.findlib.conf`,
+            ...dependencies
+          ],
           exportEnv: ['ESY__SANDBOX'],
           command: `
 if [ ! -d "${installDir(packageJson.name)}" ]; then \\
@@ -161,16 +161,16 @@ fi
           type: 'rule',
           name: ` *** Rebuild ${packageJson.name} ***`,
           target: `${packageJson.name}.rebuild`,
-          dependencies: dependencies,
+          dependencies: [
+            `${packageJson.name}.findlib.conf`,
+            ...dependencies
+          ],
           exportEnv: ['ESY__SANDBOX'],
           command: `
 $(${packageJson.name}__ENV)\\\n(cd $cur__root && ${buildCommand}); \\
           `.trim(),
         });
       } else {
-        let dependencies = packageJson.dependencies != null
-            ? Object.keys(packageJson.dependencies).map(dep => `${dep}.build`)
-            : [];
         rules.push({
           type: 'rule',
           target: `${packageJson.name}.rebuild`,
@@ -206,10 +206,7 @@ function getPkgEnv(packageDb, packageName, asCurrent = false) {
     },
     {
       name: `${prefix}__depends`,
-      value: packageJson.dependencies != null
-        // TODO: handle peerDependencies / optionalDependencies
-        ? `${Object.keys(packageJson.dependencies).join(' ')}`
-        : null,
+      value: collectDependencies(packageDb, packageName).join(' '),
     },
     {
       name: `${prefix}__target_dir`,
@@ -261,10 +258,7 @@ function getPkgEnv(packageDb, packageName, asCurrent = false) {
 function getBuildEnv(packageDb, packageName) {
   let {packageJson, packageJsonFilePath} = packageDb.packagesByName[packageName];
   let name = packageJson.name;
-  // TODO: handle peerDependencies also
-  let dependencies = packageJson.dependencies != null
-    ? Object.keys(packageJson.dependencies)
-    : [];
+  let dependencies = collectDependencies(packageDb, packageName);
   let pkgEnv = [];
 
   pkgEnv = pkgEnv.concat([
