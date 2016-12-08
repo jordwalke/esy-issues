@@ -41,27 +41,18 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
       type: 'rule',
       name: '*** Build sandbox ***',
       target: 'build',
-      dependencies: [packageDb.rootPackageName],
-      env: [],
-      exportEnv: [],
-      command: null,
+      dependencies: [`${packageDb.rootPackageName}.build`],
     },
     {
       type: 'rule',
       name: '*** Shell sandbox ***',
       target: 'shell',
-      dependencies: [`${packageDb.rootPackageName}--shell`],
-      env: [],
-      exportEnv: [],
-      command: null,
+      dependencies: [`${packageDb.rootPackageName}.shell`],
     },
     {
       type: 'rule',
       name: '*** Remove build artifacts ***',
       target: 'clean',
-      dependencies: [],
-      env: [],
-      exportEnv: [],
       command: 'rm -rf $(ESY__SANDBOX)/_build $(ESY__SANDBOX)/_install',
     },
   ];
@@ -73,7 +64,7 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
     },
     {
       type: 'raw',
-      value: 'ESY__SANDBOX ?= $(PWD)',
+      value: 'ESY__SANDBOX ?= $(CURDIR)',
     },
   ];
 
@@ -115,10 +106,8 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
       rules.push({
         type: 'rule',
         name: null,
-        target: `${packageJson.name}__findlib.conf`,
+        target: `${packageJson.name}.findlib.conf`,
         dependencies: [buildDir(packageJson.name, 'findlib.conf')],
-        env: [],
-        exportEnv: [],
         command: null,
       });
 
@@ -126,8 +115,6 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
         type: 'rule',
         name: null,
         target: buildDir(packageJson.name, 'findlib.conf'),
-        dependencies: [],
-        env: [],
         exportEnv: ['ESY__SANDBOX', `${packageJson.name}__FINDLIB_CONF`],
         command: `
 mkdir -p $(@D)
@@ -138,42 +125,41 @@ echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
       rules.push({
         type: 'rule',
         name: `*** ${packageJson.name} shell ***`,
-        target: `${packageJson.name}--shell`,
-        dependencies: [],
+        target: `${packageJson.name}.shell`,
         exportEnv: ['ESY__SANDBOX'],
-        env: [],
         command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && $SHELL)`,
       });
 
       if (packageJson.pjc && packageJson.pjc.build) {
         let buildCommand = packageJson.pjc.build;
         let dependencies = [
-          `${packageJson.name}__findlib.conf`
+          `${packageJson.name}.findlib.conf`
         ];
         if (packageJson.dependencies) {
-          dependencies = dependencies.concat(Object.keys(packageJson.dependencies));
+          dependencies = dependencies.concat(
+            Object.keys(packageJson.dependencies).map(dep => `${dep}.build`));
         }
         rules.push({
           type: 'rule',
+          target: `${packageJson.name}.build`,
+          dependencies: [installDir(packageJson.name)],
+        });
+        rules.push({
+          type: 'rule',
           name: ` *** Build ${packageJson.name} ***`,
-          target: packageJson.name,
+          target: installDir(packageJson.name),
           dependencies: dependencies,
           exportEnv: ['ESY__SANDBOX'],
-          env: [],
           command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && ${buildCommand})`,
         });
       } else {
         // TODO: Returning an empty rule. Is that really what we want here?
         rules.push({
           type: 'rule',
-          name: ` *** Build ${packageJson.name} ***`,
-          target: packageJson.name,
-          env: [],
-          exportEnv: ['ESY__SANDBOX'],
+          target: `${packageJson.name}.build`,
           dependencies: packageJson.dependencies != null
-            ? Object.keys(packageJson.dependencies)
+            ? Object.keys(packageJson.dependencies).map(dep => `${dep}.build`)
             : [],
-          command: null,
         });
       }
     });
