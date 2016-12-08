@@ -1,5 +1,14 @@
 #!/usr/bin/env node
 
+var Module = require('module');
+var removeTypes = require('flow-remove-types');
+
+let super_compile = Module.prototype._compile;
+Module.prototype._compile = function _compile(source, filename) {
+  let transformedSource = removeTypes(source)
+  super_compile.call(this, transformedSource, filename);
+};
+
 const PackageEnvironment = require('../lib/PackageEnvironment');
 const PackageDb = require('../lib/PackageDb');
 
