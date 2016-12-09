@@ -6,4 +6,4 @@ node_modules:
 	@sh ./test.sh
 
 %: node_modules
-	@$(MAKE) -s -f <(../../../.bin/esy build) $@
+	@$(MAKE) -s -f <(../../../.bin/esy build-eject) $@
