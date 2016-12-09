@@ -18,16 +18,6 @@ const Makefile = require('../lib/Makefile');
 
 const ESY_SANDBOX_REF = '$(ESY__SANDBOX)';
 
-function installDir(pkgName, ...args) {
-  return path.join(
-    '$(ESY__SANDBOX)', '_install', 'node_modules', pkgName, ...args);
-}
-
-function buildDir(pkgName, ...args) {
-  return path.join(
-    '$(ESY__SANDBOX)', '_build', 'node_modules', pkgName, ...args);
-}
-
 function envToEnvList(env) {
   return env.envVars.map(env => ({
     name: env.name,
@@ -36,6 +26,20 @@ function envToEnvList(env) {
 }
 
 function buildCommand(packageDb: PackageDb, args: Array<string>) {
+
+  function installDir(pkgName, ...args) {
+    let isRootPackage = pkgName === packageDb.rootPackageName;
+    return isRootPackage
+      ? path.join('$(ESY__SANDBOX)', '_install', ...args)
+      : path.join('$(ESY__SANDBOX)', '_install', 'node_modules', pkgName, ...args);
+  }
+
+  function buildDir(pkgName, ...args) {
+    let isRootPackage = pkgName === packageDb.rootPackageName;
+    return isRootPackage
+      ? path.join('$(ESY__SANDBOX)', '_build', ...args)
+      : path.join('$(ESY__SANDBOX)', '_build', 'node_modules', pkgName, ...args);
+  }
 
   let rules: Array<MakeRule> = [
     {
@@ -58,7 +62,7 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
     },
     {
       type: 'rule',
-      name: '*** Remove build artifacts ***',
+      name: '*** Remove sandbox installations / build artifacts ***',
       target: 'clean',
       command: 'rm -rf $(ESY__SANDBOX)/_build $(ESY__SANDBOX)/_install',
     },
@@ -79,16 +83,17 @@ function buildCommand(packageDb: PackageDb, args: Array<string>) {
     packageDb,
     (packageJsonFilePath, packageJson) => {
 
+      let isRootPackage = packageJson.name === packageDb.rootPackageName;
       let allDependencies = collectTransitiveDependencies(packageDb, packageJson.name);
 
-        let buildEnvironment = getBuildEnv(packageDb, packageJson.name);
-        let exportedEnvironment = PackageEnvironment.calculateEnvironment(
-          packageDb,
-          packageJson.name
-        );
-        for (let group of exportedEnvironment) {
-          buildEnvironment = buildEnvironment.concat(envToEnvList(group));
-        }
+      let buildEnvironment = getBuildEnv(packageDb, packageJson.name);
+      let exportedEnvironment = PackageEnvironment.calculateEnvironment(
+        packageDb,
+        packageJson.name
+      );
+      for (let group of exportedEnvironment) {
+        buildEnvironment = buildEnvironment.concat(envToEnvList(group));
+      }
 
       let findlibPath = allDependencies
         .map(dep => installDir(dep, 'lib'))
@@ -137,6 +142,14 @@ echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
         command: `$(${packageJson.name}__ENV)\\\n(cd $cur__root && $SHELL)`,
       });
 
+      rules.push({
+        type: 'rule',
+        name: `*** Clean ${packageJson.name} installation / build ***`,
+        target: `${packageJson.name}.clean`,
+        exportEnv: ['ESY__SANDBOX'],
+        command: `$(${packageJson.name}__ENV)\\\n(rm -rf $cur__install $cur__target_dir)`,
+      });
+
       let dependencies = collectDependencies(packageDb, packageJson.name)
                          .map(dep => `${dep}.build`);
 
@@ -151,7 +164,11 @@ echo "$${packageJson.name}__FINDLIB_CONF" > $(@);
             ...dependencies
           ],
           exportEnv: ['ESY__SANDBOX'],
-          command: `
+          command: isRootPackage
+          ?  `
+$(${packageJson.name}__ENV)\\\n  (cd $cur__root && ${buildCommand});
+          `.trim()
+          : `
 if [ ! -d "${installDir(packageJson.name)}" ]; then \\
   $(${packageJson.name}__ENV)\\\n  (cd $cur__root && ${buildCommand}); \\
 fi
@@ -190,6 +207,7 @@ $(${packageJson.name}__ENV)\\\n(cd $cur__root && ${buildCommand}); \\
 
 function getPkgEnv(packageDb, packageName, asCurrent = false) {
   let {packageJson, packageJsonFilePath} = packageDb.packagesByName[packageName];
+  let isRootPackage = packageJson.name === packageDb.rootPackageName;
   let prefix = asCurrent ? 'cur' : packageJson.name;
   return [
     {
@@ -210,53 +228,58 @@ function getPkgEnv(packageDb, packageName, asCurrent = false) {
     },
     {
       name: `${prefix}__target_dir`,
-      value: `$esy__build_tree/node_modules/${packageJson.name}`,
+      value: isRootPackage
+        ? `$esy__build_tree`
+        : `$esy__build_tree/node_modules/${packageJson.name}`,
     },
     {
       name: `${prefix}__install`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}`,
+      value: isRootPackage
+        ? `$esy__install_tree`
+        : `$esy__install_tree/node_modules/${packageJson.name}`
     },
     {
       name: `${prefix}__bin`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/bin`,
+      value: `$${prefix}__install/bin`,
     },
     {
       name: `${prefix}__sbin`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/sbin`,
+      value: `$${prefix}__install/sbin`,
     },
     {
       name: `${prefix}__lib`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/lib`,
+      value: `$${prefix}__install/lib`,
     },
     {
       name: `${prefix}__man`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/man`,
+      value: `$${prefix}__install/man`,
     },
     {
       name: `${prefix}__doc`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/doc`,
+      value: `$${prefix}__install/doc`,
     },
     {
       name: `${prefix}__stublibs`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/stublibs`,
+      value: `$${prefix}__install/stublibs`,
     },
     {
       name: `${prefix}__toplevel`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/toplevel`,
+      value: `$${prefix}__install/toplevel`,
     },
     {
       name: `${prefix}__share`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/share`,
+      value: `$${prefix}__install/share`,
     },
     {
       name: `${prefix}__etc`,
-      value: `$esy__install_tree/node_modules/${packageJson.name}/etc`,
+      value: `$${prefix}__install/etc`,
     },
   ];
 }
 
 function getBuildEnv(packageDb, packageName) {
   let {packageJson, packageJsonFilePath} = packageDb.packagesByName[packageName];
+  let isRootPackage = packageJson.name === packageDb.rootPackageName;
   let name = packageJson.name;
   let dependencies = collectDependencies(packageDb, packageName);
   let pkgEnv = [];
@@ -276,7 +299,9 @@ function getBuildEnv(packageDb, packageName) {
     },
     {
       name: 'OCAMLFIND_CONF',
-      value: `$esy__build_tree/node_modules/${name}/findlib.conf`,
+      value: isRootPackage
+        ? `$esy__build_tree/findlib.conf`
+        : `$esy__build_tree/node_modules/${name}/findlib.conf`,
     },
   ]);
 
