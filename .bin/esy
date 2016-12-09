@@ -25,13 +25,20 @@ SCRIPTDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 # Capture the error output
 # Capturing stderr is very important to prevent nodejs from setting
 # stderr to nonblocking mode
-SETENVCMD=$(/usr/bin/env node $SCRIPTDIR/esy.js "$@" $CURDIR 2>&1)
-if [ $? -ne 0 ]; then
+
+if [ "$1" == "build" ]; then
+  make -s -f <(/usr/bin/env node $SCRIPTDIR/esy.js build-eject $CURDIR 2>&1) build
+elif [ "$1" == "shell" ]; then
+  make -s -f <(/usr/bin/env node $SCRIPTDIR/esy.js build-eject $CURDIR 2>&1) shell
+else
+  SETENVCMD=$(/usr/bin/env node $SCRIPTDIR/esy.js "$@" $CURDIR 2>&1)
+  if [ $? -ne 0 ]; then
     echo "Failed to get dependency:"
     printf "%s\n" "$SETENVCMD" >&2
     exit 1
+  fi
+  # Use like this:
+  # $(esy) && command
+  echo "$SETENVCMD"
 fi
-# Use like this:
-# $(esy) && command
-echo "$SETENVCMD"
 

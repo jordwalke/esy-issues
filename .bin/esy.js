@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-var Module = require('module');
-var removeTypes = require('flow-remove-types');
+let Module = require('module');
+let childProcess = require('child_process');
+let removeTypes = require('flow-remove-types');
 
 let super_compile = Module.prototype._compile;
 Module.prototype._compile = function _compile(source, filename) {
@@ -138,12 +139,10 @@ const PackageDb = require('../lib/PackageDb');
  */
 
 const builtInCommands = {
-  "build": function(...args) {
-    var build = require('./esyBuildCommand');
+  "build-eject": function(...args) {
+    let build = require('../lib/esyBuildEjectCommand');
     build(...args);
   },
-  "shell": true,
-  "deshell": true
 };
 
 // TODO: Need to change this to climb to closest package.json.
