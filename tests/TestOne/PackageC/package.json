@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "ocaml": "https://github.com/andreypopp/ocaml.git#trunk",
     "ocamlfind": "https://github.com/andreypopp/ocamlfind.git",
     "buildtool": "file:../buildtool"
+  },
+  "peerDependencies": {
+    "ocaml": "https://github.com/andreypopp/ocaml.git#trunk"
   },
   "pjc": {
     "build": "$buildtool__root/bin/buildtool"
