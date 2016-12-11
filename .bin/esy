@@ -26,7 +26,7 @@ SCRIPTDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 # Capturing stderr is very important to prevent nodejs from setting
 # stderr to nonblocking mode
 
-if [ "$1" == "build" ] || [ "$1" == "shell" ]; then
+if [ "$1" == "build" ] || [ "$1" == "shell" ] || [ "$1" == "clean" ]; then
   MAKEFILE=`/usr/bin/env node $SCRIPTDIR/esy.js build-eject $CURDIR 2>&1`
   if [ $? -ne 0 ]; then
     echo "Failed to get dependency:"
