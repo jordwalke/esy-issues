@@ -6,7 +6,10 @@
 
 DEPENDS=""
 for p in $cur__depends; do
-  if [ "$p" != "buildtool" ] && [ "$p" != "ocaml" ] && [ "$p" != "ocamlfind" ]; then
+  if [ "$p" != "buildtool" ] && \
+     [ "$p" != "ocaml" ] && \
+     [ "$p" != "@esy-ocaml/ocaml" ] && \
+     [ "$p" != "ocamlfind" ]; then
     DEPENDS="$DEPENDS $p"
   fi
 done
