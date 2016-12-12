@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "ocamlfind": "andreypopp/ocamlfind",
     "PackageB": "../PackageB",
-    "solvuu-build": "andreypopp/solvuu-build#pjc"
+    "buildtool": "../buildtool"
   },
   "peerDependencies": {
     "ocaml": "andreypopp/ocaml#trunk"
   },
   "pjc": {
-    "build": "make"
+    "build": "buildtool"
   },
   "exportedEnvVars" : {
     "packagea__dynamicVar": {

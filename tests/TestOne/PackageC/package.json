@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "ocamlfind": "https://github.com/andreypopp/ocamlfind.git",
-    "buildtool": "file:../buildtool"
+    "buildtool": "../buildtool"
   },
   "peerDependencies": {
     "ocaml": "andreypopp/ocaml#trunk"
   },
   "pjc": {
-    "build": "$buildtool__root/bin/buildtool"
+    "build": "buildtool"
   },
   "exportedEnvVars" : {
     "packagec__dynamicVar": {
