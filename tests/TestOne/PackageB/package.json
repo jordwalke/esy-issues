@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "PackageC": "../PackageC",
-    "buildtool": "../buildtool"
+    "PackageC": "file:../PackageC",
+    "buildtool": "file:../buildtool"
   },
   "peerDependencies": {
     "ocaml": "andreypopp/ocaml#trunk"

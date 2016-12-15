@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "PackageB": "../PackageB",
-    "buildtool": "../buildtool"
+    "PackageB": "file:../PackageB",
+    "buildtool": "file:../buildtool"
   },
   "peerDependencies": {
-    "ocaml": "andreypopp/ocaml#trunk"
+    "ocaml": "https://github.com/andreypopp/ocaml.git#trunk"
   },
   "pjc": {
     "build": "buildtool"
