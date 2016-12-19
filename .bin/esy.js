@@ -12,7 +12,6 @@ Module.prototype._compile = function _compile(source, filename) {
 };
 
 const PackageEnvironment = require('../lib/PackageEnvironment');
-const PackageDb = require('../lib/PackageDb');
 const Sandbox = require('../lib/Sandbox');
 
 /**
