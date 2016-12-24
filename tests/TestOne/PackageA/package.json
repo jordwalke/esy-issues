@@ -5,15 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "PackageB": "file:../PackageB",
-    "buildtool": "file:../buildtool"
-  },
-  "peerDependencies": {
-    "ocaml": "https://github.com/andreypopp/ocaml.git#trunk"
+    "buildtool": "file:../buildtool",
+    "ocaml": "https://github.com/andreypopp/ocaml.git#esy"
   },
   "pjc": {
     "build": "buildtool"
   },
-  "exportedEnvVars" : {
+  "exportedEnvVars": {
     "packagea__dynamicVar": {
       "val": "$cur__root"
     },
@@ -32,10 +30,6 @@
       "scope": "global",
       "val": "$packagea__root/package.json",
       "exclusive": true,
-      "note": "setting to fail, because there should be no conflict",
-      "note": "unless there are *two* versions we resolve to globally",
-      "note": "and in that case we *should fail*.",
-      "note": "This is why it's important to only set global variables",
       "note": "transitively for buildTimeOnlyDependencies intelligently."
     }
   },

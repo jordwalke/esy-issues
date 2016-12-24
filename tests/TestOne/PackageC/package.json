@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "buildtool": "file:../buildtool"
-  },
-  "peerDependencies": {
-    "ocaml": "https://github.com/andreypopp/ocaml.git#trunk"
+    "buildtool": "file:../buildtool",
+    "ocaml": "https://github.com/andreypopp/ocaml.git#esy"
   },
   "pjc": {
     "build": "buildtool"
