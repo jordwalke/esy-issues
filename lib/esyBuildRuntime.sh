@@ -1,25 +1,6 @@
 ESY__BUILD_CACHE_URL_PREFIX="https://github.com/andreypopp/esy/releases/download/build-cache"
 ESY__BUILD_CACHE_URL="$ESY__BUILD_CACHE_URL_PREFIX/$cur__install_key.tar.gz"
 
-esy-build-download-status () {
-  curl                            \
-    -s                            \
-    -o /dev/null                  \
-    -w "%{http_code}"             \
-    -I "$ESY__BUILD_CACHE_URL"
-}
-
-esy-build-download () {
-  cd $esy__store/_install
-  wget                \
-    --tries 10        \
-    --timestamping    \
-    --show-progress   \
-    --quiet           \
-    "$ESY__BUILD_CACHE_URL"
-  tar -xzf $cur__install_key.tar.gz
-}
-
 esy-prepare-install-tree () {
   mkdir -p          \
     $cur__install   \
@@ -77,4 +58,31 @@ esy-build () {
       esy-build-command
     fi
   fi
+}
+
+esy-build-fetch () {
+  if [ ! -d "$cur__install" ]; then
+    set +e
+    esy-build-download
+    set -e
+  fi
+}
+
+esy-build-download-status () {
+  curl                            \
+    -s                            \
+    -o /dev/null                  \
+    -w "%{http_code}"             \
+    -I "$ESY__BUILD_CACHE_URL"
+}
+
+esy-build-download () {
+  cd $esy__store/_install
+  wget                              \
+    --tries 10                      \
+    --timestamping                  \
+    --show-progress                 \
+    --quiet                         \
+    "$ESY__BUILD_CACHE_URL" &&      \
+  tar -xzf $cur__install_key.tar.gz
 }
