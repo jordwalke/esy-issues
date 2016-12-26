@@ -32,8 +32,9 @@ esy-build-command () {
   BUILD_CMD=`node \
     -p "let pjc = require(\"$cur__root/package.json\").pjc; ((pjc || {}).build || 'true')"`
   /bin/bash --noprofile --norc -c "$BUILD_CMD" > $esy__store/_logs/$cur__install_key.build.log 2>&1
+  rc="$?"
   set -e
-  if [ "$?" != "0" ]; then
+  if [ "$rc" != "0" ]; then
     esy-clean
     echo "Build failied, see $esy__store/_logs/$cur__install_key.build.log for details"
     exit 1
