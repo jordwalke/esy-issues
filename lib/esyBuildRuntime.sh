@@ -48,7 +48,7 @@ esy-clean () {
 
 esy-build () {
   if [ ! -d "$cur__install" ]; then
-    echo -n "Checking if cached build artifact is available... "
+    echo -n "*** $cur__name: checking if cached build artifact is available... "
     cache_build_status=`esy-build-download-status`
     if [ "$cache_build_status" != "404" ]; then
       echo "found, downloading... "
