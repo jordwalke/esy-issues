@@ -79,6 +79,7 @@ esy-build-download-status () {
 esy-build-download () {
   cd $esy__store/_install
   wget                              \
+    --continue                      \
     --tries 10                      \
     --timestamping                  \
     --show-progress                 \
