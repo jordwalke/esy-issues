@@ -14,8 +14,7 @@
     "mkdirp": "^0.5.1",
     "outdent": "^0.3.0",
     "path-is-inside": "^1.0.2",
-    "resolve": "^1.1.7",
-    "yarn": "^0.17.10"
+    "resolve": "^1.1.7"
   },
   "repository": {
     "type": "git",
