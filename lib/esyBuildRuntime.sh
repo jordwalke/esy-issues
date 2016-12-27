@@ -1,3 +1,7 @@
+set -e
+set -u
+set -o pipefail
+
 ESY__BUILD_CACHE_URL_PREFIX="https://github.com/andreypopp/esy/releases/download/build-cache"
 ESY__BUILD_CACHE_URL="$ESY__BUILD_CACHE_URL_PREFIX/$cur__install_key.tar.gz"
 
