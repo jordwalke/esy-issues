@@ -33,7 +33,7 @@ if [ "$1" == "build" ] || [ "$1" == "shell" ] || [ "$1" == "clean" ]; then
     printf "%s\n" "$MAKEFILE" >&2
     exit 1
   fi
-  make -s -f <(echo "$MAKEFILE") "$1"
+  make -j -s -f <(echo "$MAKEFILE") "$1"
 
 elif [ "$1" == "build-eject" ]; then
   exec /usr/bin/env node $SCRIPTDIR/esy.js build-eject $CURDIR
