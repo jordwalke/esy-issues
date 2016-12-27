@@ -38,9 +38,11 @@ esy-build-command () {
   BUILD_RETURN_CODE="$?"
   set -e
   if [ "$BUILD_RETURN_CODE" != "0" ]; then
-    echo "Build failied, see $BUILD_LOG for details"
+    echo "*** $cur__name: build failied, see $BUILD_LOG for details"
     esy-clean
     exit 1
+  else
+    echo "*** $cur__name: build complete"
   fi
 }
 
