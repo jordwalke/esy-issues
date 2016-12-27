@@ -7,7 +7,7 @@
     "ocamlfind": "andreypopp/ocamlfind#esy",
     "ocaml": "https://github.com/andreypopp/ocaml.git#esy"
   },
-  "pjc": {
+  "esy": {
     "build": "cp -r bin/buildtool $cur__bin/buildtool"
   }
 }

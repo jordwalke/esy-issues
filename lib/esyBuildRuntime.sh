@@ -5,6 +5,12 @@ set -o pipefail
 ESY__BUILD_CACHE_URL_PREFIX="https://github.com/andreypopp/esy/releases/download/build-cache"
 ESY__BUILD_CACHE_URL="$ESY__BUILD_CACHE_URL_PREFIX/$cur__install_key.tar.gz"
 
+ESY__BUILD_COMMAND="
+let esy = require(\"$cur__root/package.json\").esy || {};\
+let build = esy.build || 'true';\
+build = Array.isArray(build) ? build.join(' && ') : build;\
+build;"
+
 esy-prepare-install-tree () {
   mkdir -p          \
     $cur__install   \
@@ -32,15 +38,19 @@ esy-build-archive () {
 }
 
 esy-build-command () {
+  BUILD_LOG="$esy__store/_logs/$cur__install_key.build.log"
+  BUILD_CMD=`node -p "$ESY__BUILD_COMMAND"`
   set +e
-  BUILD_CMD=`node \
-    -p "let pjc = require(\"$cur__root/package.json\").pjc; ((pjc || {}).build || 'true')"`
-  /bin/bash --noprofile --norc -c "$BUILD_CMD" > $esy__store/_logs/$cur__install_key.build.log 2>&1
-  rc="$?"
+  /bin/bash             \
+    --noprofile --norc  \
+    -e -u -o pipefail   \
+    -c "$BUILD_CMD"     \
+    > "$BUILD_LOG" 2>&1
+  BUILD_RETURN_CODE="$?"
   set -e
-  if [ "$rc" != "0" ]; then
+  if [ "$BUILD_RETURN_CODE" != "0" ]; then
+    echo "Build failied, see $BUILD_LOG for details"
     esy-clean
-    echo "Build failied, see $esy__store/_logs/$cur__install_key.build.log for details"
     exit 1
   fi
 }
