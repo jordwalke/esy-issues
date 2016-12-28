@@ -2,6 +2,11 @@ set -e
 set -u
 set -o pipefail
 
+FG_RED='\033[0;31m'
+FG_GREEN='\033[0;32m'
+FG_WHITE='\033[1;37m'
+FG_RESET='\033[0m'
+
 ESY__BUILD_COMMAND="
 let esy = require(\"$cur__root/package.json\").esy || {};\
 let build = esy.build || 'true';\
@@ -27,6 +32,7 @@ esy-shell () {
 }
 
 esy-build-command () {
+  echo -e "${FG_WHITE}*** $cur__name: building from source...${FG_RESET}"
   BUILD_LOG="$esy__store/_logs/$cur__install_key.build.log"
   BUILD_CMD=`node -p "$ESY__BUILD_COMMAND"`
   set +e
@@ -38,11 +44,11 @@ esy-build-command () {
   BUILD_RETURN_CODE="$?"
   set -e
   if [ "$BUILD_RETURN_CODE" != "0" ]; then
-    echo "*** $cur__name: build failied, see $BUILD_LOG for details"
+    echo -e "${FG_RED}*** $cur__name: build failied, see $BUILD_LOG for details${FG_RESET}"
     esy-clean
     exit 1
   else
-    echo "*** $cur__name: build complete"
+    echo -e "${FG_GREEN}*** $cur__name: build complete${FG_RESET}"
   fi
 }
 
@@ -56,7 +62,6 @@ esy-build () {
   # mv to the $cur__install. Why we don't do this now is because we don't
   # assume everything we build is relocatable.
   if [ ! -d "$cur__install" ]; then
-    echo "*** $cur__name: building from source... "
     esy-prepare-install-tree
     # TODO: we need proper locking mechanism here
     esy-build-command
