@@ -8,9 +8,9 @@ FG_WHITE='\033[1;37m'
 FG_RESET='\033[0m'
 
 ESY__BUILD_COMMAND="
-let esy = require(\"$cur__root/package.json\").esy || {};\
-let build = esy.build || 'true';\
-build = Array.isArray(build) ? build.join(' && ') : build;\
+let esy = require(\"$cur__root/package.json\").esy || {};
+let build = esy.build || 'true';
+build = Array.isArray(build) ? build.join(' && ') : build;
 build;"
 
 esy-prepare-install-tree () {
@@ -28,7 +28,13 @@ esy-prepare-install-tree () {
 esy-shell () {
   /bin/bash \
     --noprofile \
-    --rcfile <(echo "export PS1=\"[$cur__name sandbox] $ \"; source $ESY__RUNTIME")
+    --rcfile <(echo "
+      export PS1=\"[$cur__name sandbox] $ \";
+      source $ESY__RUNTIME;
+      set +e
+      set +u
+      set +o pipefail
+    ")
 }
 
 esy-build-command () {
