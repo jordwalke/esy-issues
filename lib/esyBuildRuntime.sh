@@ -14,6 +14,7 @@ build = Array.isArray(build) ? build.join(' && ') : build;
 build;"
 
 esy-prepare-install-tree () {
+  mkdir -p $cur__target_dir
   mkdir -p          \
     $cur__install   \
     $cur__lib       \
@@ -39,7 +40,7 @@ esy-shell () {
 
 esy-build-command () {
   echo -e "${FG_WHITE}*** $cur__name: building from source...${FG_RESET}"
-  BUILD_LOG="$esy__store/_logs/$cur__install_key.build.log"
+  BUILD_LOG="$cur__target_dir/_esy_build.log"
   BUILD_CMD=`node -p "$ESY__BUILD_COMMAND"`
   set +e
   /bin/bash             \
@@ -50,7 +51,7 @@ esy-build-command () {
   BUILD_RETURN_CODE="$?"
   set -e
   if [ "$BUILD_RETURN_CODE" != "0" ]; then
-    echo -e "${FG_RED}*** $cur__name: build failied, see $BUILD_LOG for details${FG_RESET}"
+    echo -e "${FG_RED}*** $cur__name: build failied, see:\n\n  $BUILD_LOG\n\nfor details${FG_RESET}"
     esy-clean
     exit 1
   else
@@ -60,7 +61,6 @@ esy-build-command () {
 
 esy-clean () {
   rm -rf $cur__install
-  rm -rf $cur__target_dir
 }
 
 esy-build () {
@@ -72,4 +72,10 @@ esy-build () {
     # TODO: we need proper locking mechanism here
     esy-build-command
   fi
+}
+
+esy-force-build () {
+  esy-prepare-install-tree
+  # TODO: we need proper locking mechanism here
+  esy-build-command
 }
