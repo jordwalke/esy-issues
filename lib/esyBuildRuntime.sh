@@ -51,7 +51,13 @@ esy-build-command () {
   BUILD_RETURN_CODE="$?"
   set -e
   if [ "$BUILD_RETURN_CODE" != "0" ]; then
-    echo -e "${FG_RED}*** $cur__name: build failied, see:\n\n  $BUILD_LOG\n\nfor details${FG_RESET}"
+    if [ "$esy_build__source_type" == "local" ]; then
+      echo -e "${FG_RED}*** $cur__name: build failied:\n"
+      cat "$BUILD_LOG" | sed  's/^/  /'
+      echo -e "${FG_RESET}"
+    else
+      echo -e "${FG_RED}*** $cur__name: build failied, see:\n\n  $BUILD_LOG\n\nfor details${FG_RESET}"
+    fi
     esy-clean
     exit 1
   else
