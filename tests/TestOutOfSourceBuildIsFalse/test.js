@@ -1,21 +1,21 @@
-const {exec: execBase, readFile} = require('../harness');
+const {createTestEnv} = require('../harness');
 
-function exec(cmd) {
-  return execBase(cmd, {cwd: __dirname});
-}
+let sandbox = createTestEnv({
+  sandbox: __dirname
+});
 
 test('env', () => {
-  let res = exec('../../.bin/esy');
+  let res = sandbox.exec('../../.bin/esy');
   expect(res.status).toBe(0);
   expect(res.stdout.toString()).toMatchSnapshot();
 });
 
 test('forces build to happen in $cur__target_dir', () => {
-  let res = exec(`
+  let res = sandbox.exec(`
   rm -rf _build _install _esy_store
   ../../.bin/esy build
   `);
   expect(res.status).toBe(0);
-  expect(readFile(__dirname, 'OK')).toBe('OK');
-  expect(readFile(__dirname, '_build', 'OK')).toBe('OK!!!');
+  expect(sandbox.readFile('OK')).toBe('OK');
+  expect(sandbox.readFile('_build', 'OK')).toBe('OK!!!');
 });

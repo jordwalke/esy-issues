@@ -1,10 +1,10 @@
-const {exec: execBase} = require('../harness');
+const {createTestEnv} = require('../harness');
 
-function exec(cmd) {
-  return execBase(cmd, {cwd: __dirname});
-}
+let sandbox = createTestEnv({
+  sandbox: __dirname
+});
 
-exec(`
+sandbox.exec(`
 pushd buildtool
 rm -rf node_modules
 npm install
@@ -42,7 +42,7 @@ popd
 `);
 
 test('env', () => {
-  let res = exec(`
+  let res = sandbox.exec(`
   rm -rf _esy_store
   cd PackageA
   rm -rf _build _install
@@ -53,7 +53,7 @@ test('env', () => {
 });
 
 test('build', () => {
-  let res = exec(`
+  let res = sandbox.exec(`
   rm -rf _esy_store
   cd PackageA
   rm -rf _build _install
@@ -61,7 +61,7 @@ test('build', () => {
   `);
   expect(res.status).toBe(0);
   expect(res.stdout.toString()).toMatchSnapshot();
-  let output = exec(`
+  let output = sandbox.exec(`
   cd PackageA
   ../../../.bin/esy ocamlrun ./_build/package_a_cmd
   `);

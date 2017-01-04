@@ -1,23 +1,49 @@
 const fs = require('fs');
 const path = require('path');
 const {spawnSync} = require('child_process');
+const outdent = require('outdent');
 
-function exec(cmd, options) {
-  let proc = spawnSync(`
-  set -euo pipefail
-  export ESY__STORE="${options.cwd}/_esy_store"
-  ${cmd}
-  `, Object.assign({}, {shell: '/bin/bash'}, options));
-  if (!options.expectFailure && proc.status != 0) {
-    console.log('Error while executing, see stdout:\n', proc.stdout.toString());
-    console.log('Error while executing, see stderr:\n', proc.stderr.toString());
+const SHELL = '/bin/bash';
+
+function createTestEnv({sandbox, esyTest = true}) {
+  function exec(cmd) {
+    return spawnSync(outdent`
+      set -euo pipefail
+      ${esyTest ? 'export ESY__TEST="yes"' : ''}
+      export ESY__STORE="${sandbox}/_esy_store"
+      cd ${sandbox}
+      ${cmd}
+    `.trim(), {shell: SHELL});
   }
-  return proc;
+  return {
+    exec(cmd) {
+      let proc = exec(cmd);
+      if (proc.status != 0) {
+        throw new Error(outdent`
+          Error while running command.
+
+          COMMAND:
+
+          ${cmd}
+          STDOUT:
+
+          ${proc.stdout.toString()}
+          STDERR:
+
+          ${proc.stderr.toString()}
+
+        `);
+      }
+      return proc;
+    },
+    execAndExpectFailure(cmd) {
+      return exec(cmd);
+    },
+    readFile(...filename) {
+      filename = path.join(sandbox, ...filename);
+      return fs.readFileSync(filename, 'utf8').trim();
+    },
+  };
 }
 
-function readFile(...filename) {
-  filename = path.join(...filename);
-  return fs.readFileSync(filename, 'utf8').trim();
-}
-
-module.exports = {exec, readFile};
+module.exports = {createTestEnv};

@@ -3,10 +3,10 @@ exports[`test env 1`] = `
 # EsySandboxVariables /Users/andreypopp/Workspace/esy/tests/TestOutOfSourceBuildIsFalse
 export PATH=\"/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin\"
 export SHELL=\"env -i /bin/bash --norc --noprofile\"
-export esy__platform=\"darwin\"
-export esy__architecture=\"x64\"
-export esy__target_platform=\"darwin\"
-export esy__target_architecture=\"x64\"
+export esy__platform=\"platform\"
+export esy__architecture=\"architecture\"
+export esy__target_platform=\"platform\"
+export esy__target_architecture=\"architecture\"
 # [BuiltIns]
 export esy__sandbox=\"$ESY__SANDBOX\"
 export esy__store=\"$ESY__STORE\"

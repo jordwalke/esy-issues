@@ -1,24 +1,22 @@
-const {exec: execBase, readFile} = require('../harness');
+const {createTestEnv} = require('../harness');
 
-function exec(cmd) {
-  return execBase(cmd, {cwd: __dirname});
+// For now sandboxing is only supported on macOS.
+if (process.platform === 'darwin') {
+
+  let sandbox = createTestEnv({
+    sandbox: __dirname,
+    esyTest: false
+  });
+
+  test('catches violation (darwin)', () => {
+    let res = sandbox.execAndExpectFailure(`
+    rm -rf _build _install _esy_store
+    ../../.bin/esy build`
+    );
+    expect(res.status).not.toBe(0);
+    expect(sandbox.readFile('should_be_GOOD')).toBe('GOOD');
+  });
+
 }
 
-function execWithFailure(cmd) {
-  return execBase(cmd, {cwd: __dirname, expectFailure: true});
-}
-
-test('env', () => {
-  let res = exec('../../.bin/esy');
-  expect(res.status).toBe(0);
-  expect(res.stdout.toString()).toMatchSnapshot();
-});
-
-test('catches violation', () => {
-  let res = execWithFailure(`
-  rm -rf _build _install _esy_store
-  ../../.bin/esy build`
-  );
-  expect(res.status).not.toBe(0);
-  expect(readFile(__dirname, 'should_be_GOOD')).toBe('GOOD');
-});
+test('just some dummy case so jest does not fail on unsupported platforms', () => {});

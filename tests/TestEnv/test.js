@@ -1,10 +1,8 @@
-const {exec: execBase} = require('../harness');
+const {createTestEnv} = require('../harness');
 
-function exec(cmd) {
-  return execBase(cmd, {cwd: __dirname});
-}
+let sandbox = createTestEnv({sandbox: __dirname});
 
-exec(`
+sandbox.exec(`
 pushd PackageC
 popd
 
@@ -25,7 +23,7 @@ popd
 `);
 
 test('environment for PackageC', () => {
-  let res = exec(`
+  let res = sandbox.exec(`
   cd PackageC
   ../../../.bin/esy
   `);
@@ -34,7 +32,7 @@ test('environment for PackageC', () => {
 });
 
 test('environment for PackageB', () => {
-  let res = exec(`
+  let res = sandbox.exec(`
   cd PackageB
   ../../../.bin/esy
   `);
@@ -43,7 +41,7 @@ test('environment for PackageB', () => {
 });
 
 test('environment for PackageA', () => {
-  let res = exec(`
+  let res = sandbox.exec(`
   cd PackageA
   ../../../.bin/esy
   `);

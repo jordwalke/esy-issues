@@ -3,10 +3,10 @@ exports[`test env 1`] = `
 # EsySandboxVariables /Users/andreypopp/Workspace/esy/tests/TestDepOutOfSourceBuildIsFalse
 export PATH=\"/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin\"
 export SHELL=\"env -i /bin/bash --norc --noprofile\"
-export esy__platform=\"darwin\"
-export esy__architecture=\"x64\"
-export esy__target_platform=\"darwin\"
-export esy__target_architecture=\"x64\"
+export esy__platform=\"platform\"
+export esy__architecture=\"architecture\"
+export esy__target_platform=\"platform\"
+export esy__target_architecture=\"architecture\"
 # [BuiltIns]
 export esy__sandbox=\"$ESY__SANDBOX\"
 export esy__store=\"$ESY__STORE\"
@@ -30,18 +30,18 @@ export cur__share=\"$cur__install/share\"
 export cur__etc=\"$cur__install/etc\"
 # [Custom Variables]
 export OCAMLFIND_CONF=\"$cur__target_dir/_esy_findlib.conf\"
-export PATH=\"$esy__store/_install/dep-1.0.0-ebdf8a53bb05658117e3b5034d29eacbd00a3e11/bin:$PATH\"
-export MAN_PATH=\"$esy__store/_install/dep-1.0.0-ebdf8a53bb05658117e3b5034d29eacbd00a3e11/man:$MAN_PATH\"
+export PATH=\"$esy__store/_install/dep-1.0.0/bin:$PATH\"
+export MAN_PATH=\"$esy__store/_install/dep-1.0.0/man:$MAN_PATH\"
 
 # dep@1.0.0 $esy__sandbox/node_modules/dep/package.json
 # [BuiltIns]
 export dep__name=\"dep\"
 export dep__version=\"1.0.0\"
 export dep__source_root=\"$esy__sandbox/node_modules/dep\"
-export dep__root=\"$esy__store/_build/dep-1.0.0-ebdf8a53bb05658117e3b5034d29eacbd00a3e11\"
+export dep__root=\"$esy__store/_build/dep-1.0.0\"
 export dep__depends=\"\"
-export dep__target_dir=\"$esy__store/_build/dep-1.0.0-ebdf8a53bb05658117e3b5034d29eacbd00a3e11\"
-export dep__install=\"$esy__store/_install/dep-1.0.0-ebdf8a53bb05658117e3b5034d29eacbd00a3e11\"
+export dep__target_dir=\"$esy__store/_build/dep-1.0.0\"
+export dep__install=\"$esy__store/_install/dep-1.0.0\"
 export dep__bin=\"$dep__install/bin\"
 export dep__sbin=\"$dep__install/sbin\"
 export dep__lib=\"$dep__install/lib\"
