@@ -7,7 +7,7 @@ function exec(cmd, options) {
   set -euo pipefail
   export ESY__STORE="${options.cwd}/_esy_store"
   ${cmd}
-  `, Object.assign({}, {shell: true}, options));
+  `, Object.assign({}, {shell: '/bin/bash'}, options));
   if (!options.expectFailure && proc.status != 0) {
     console.log('Error while executing, see stdout:\n', proc.stdout.toString());
     console.log('Error while executing, see stderr:\n', proc.stderr.toString());
