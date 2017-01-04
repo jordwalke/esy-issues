@@ -1,6 +1,6 @@
 exports[`test env 1`] = `
 "
-# EsySandboxVariables /Users/andreypopp/Workspace/esy/tests/TestDepOutOfSourceBuildIsFalse
+# EsySandboxVariables 
 export PATH=\"/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin\"
 export SHELL=\"env -i /bin/bash --norc --noprofile\"
 export esy__platform=\"platform\"
