@@ -1,8 +1,8 @@
 {
-  "name": "TestOutOfSourceBuildIsFalse",
+  "name": "TestBuildsInSource",
   "version": "1.0.0",
   "esy": {
     "build": "echo OK!!! > ./OK",
-    "buildOutOfSource": false
+    "buildsInSource": true
   }
 }
