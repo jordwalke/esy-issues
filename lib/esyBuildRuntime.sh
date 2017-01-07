@@ -70,20 +70,22 @@ esy-copy-permissions () {
 }
 
 esy-replace-string () {
-  INPUT_FILE="$1"
-  OUTPUT_FILE="$2"
-  SRC_STRING="$3"
-  DEST_STRING="$4"
-  # TODO: This uses bbe command which is not available by default on linux,
-  # darwin at least.
-  bbe -e "s|$SRC_STRING|$DEST_STRING|" -o "$OUTPUT_FILE" "$INPUT_FILE"
+  FILE="$1"
+  SRC_STRING="$2"
+  DEST_STRING="$3"
+  # TODO: get rid of python here
+  python -c "
+with open('$FILE', 'r') as input_file:
+  data = input_file.read()
+data = data.replace('$SRC_STRING', '$DEST_STRING')
+with open('$FILE', 'w') as output_file:
+  output_file.write(data)
+  "
 }
 
 esy-commit-install () {
   for filename in `find $cur__install -type f`; do
-    esy-replace-string "$filename" "$filename.rewritten" "$cur__install" "$esy_build__install"
-    esy-copy-permissions "$filename" "$filename.rewritten"
-    mv "$filename.rewritten" "$filename"
+    esy-replace-string "$filename" "$cur__install" "$esy_build__install"
   done
   mv $cur__install $esy_build__install
 }
