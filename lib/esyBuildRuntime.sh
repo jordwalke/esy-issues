@@ -69,11 +69,19 @@ esy-copy-permissions () {
   chmod `stat -f '%p' "$1"` "${@:2}"
 }
 
+esy-replace-string () {
+  INPUT_FILE="$1"
+  OUTPUT_FILE="$2"
+  SRC_STRING="$3"
+  DEST_STRING="$4"
+  # TODO: This uses bbe command which is not available by default on linux,
+  # darwin at least.
+  bbe -e "s|$SRC_STRING|$DEST_STRING|" -o "$OUTPUT_FILE" "$INPUT_FILE"
+}
+
 esy-commit-install () {
   for filename in `find $cur__install -type f`; do
-    # TODO: This uses bbe command which is not available by default on linux,
-    # darwin at least.
-    bbe -e "s|$cur__install|$esy_build__install|" -o "$filename.rewritten" "$filename"
+    esy-replace-string "$filename" "$filename.rewritten" "$cur__install" "$esy_build__install"
     esy-copy-permissions "$filename" "$filename.rewritten"
     mv "$filename.rewritten" "$filename"
   done
