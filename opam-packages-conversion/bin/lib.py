@@ -267,7 +267,7 @@ def generate_package_json(name, version, directory):
         if dep == "" or dep in config.OPAM_DEPOPT_BLACKLIST:
             continue
         npm_range = opamRangeToNpmRange(range)
-        packageJSON["dependencies"][scoped(dep)] = npm_range
+        packageJSON.setdefault('conditionalDependencies', {})[scoped(dep)] = npm_range
 
     g = re.findall(r"ocaml-version ([!=<>]+.*?\".*?\")", d["available"])
     if g:

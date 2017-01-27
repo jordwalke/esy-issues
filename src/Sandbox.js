@@ -94,6 +94,7 @@ export type PackageJson = {
   dependencies?: PackageJsonVersionSpec;
   peerDependencies?: PackageJsonVersionSpec;
   devDependencies?: PackageJsonVersionSpec;
+  conditionalDependencies?: PackageJsonVersionSpec;
   optionalDependencies?: PackageJsonVersionSpec;
 
   // This is specific to npm, make sure we get rid of that if we want to port to
@@ -112,21 +113,60 @@ export type DependencyTree = {
 
 
 type SandboxBuildContext = {
-  packageDependencyTrace: Array<string>;
+  packageDependencyTrace: Array<{name: string; packageDirectory: string}>;
   buildPackageInfo: (string, SandboxBuildContext) => Promise<PackageInfo>;
   resolve: (string, string) => Promise<string>;
 };
+
+type PackageDependency = {
+  type: 'regular' | 'peer' | 'conditional';
+  name: string;
+  requirement: string;
+}
+
+function getDependencies(packageJson: PackageJson): Array<PackageDependency> {
+  const {
+    dependencies = {},
+    peerDependencies = {},
+    conditionalDependencies = {}
+  } = packageJson;
+
+  const result = [];
+  const seen = new Set();
+
+  function forEachDependency(dependencies, fn) {
+    for (let name in dependencies) {
+      if (seen.has(name)) {
+        continue;
+      }
+      seen.add(name);
+      fn(name, dependencies[name]);
+    }
+  }
+
+  forEachDependency(packageJson.dependencies, (name, requirement) => {
+    result.push({type: 'regular', name, requirement});
+  });
+
+  forEachDependency(packageJson.peerDependencies, (name, requirement) => {
+    result.push({type: 'peer', name, requirement});
+  });
+
+  forEachDependency(packageJson.conditionalDependencies, (name, requirement) => {
+    result.push({type: 'conditional', name, requirement});
+  });
+
+  return result;
+}
 
 async function fromDirectory(directory: string): Promise<Sandbox> {
   const source = path.resolve(directory);
   const env = getEnvironment();
   const packageJson = await readPackageJson(path.join(directory, 'package.json'));
-  const depSpecList = objectToDependencySpecList(
-    packageJson.dependencies,
-    packageJson.peerDependencies
-  );
 
-  if (depSpecList.length > 0) {
+  const dependencies  = getDependencies(packageJson)
+
+  if (dependencies.length > 0) {
 
     const resolveCache: Map<string, Promise<string>> = new Map();
 
@@ -154,11 +194,11 @@ async function fromDirectory(directory: string): Promise<Sandbox> {
 
     const [dependencyTree, errors] = await buildDependencyTree(
       source,
-      depSpecList,
+      dependencies,
       {
         resolve: resolveWithCache,
         buildPackageInfo: buildPackageInfoWithCache,
-        packageDependencyTrace: [packageJson.name],
+        packageDependencyTrace: [{name: packageJson.name, packageDirectory: source}],
       }
     );
 
@@ -264,35 +304,50 @@ function getEnvironment() {
 
 async function buildDependencyTree(
   baseDir: string,
-  dependencySpecList: Array<string>,
+  dependencies: Array<PackageDependency>,
   context: SandboxBuildContext
 ): Promise<[DependencyTree, Array<{message: string}>]> {
+
   let dependencyTree: {[name: string]: PackageInfo} = {};
   let errors = [];
   let missingPackages = [];
 
-  for (let dependencySpec of dependencySpecList) {
-    const {name} = parseDependencySpec(dependencySpec);
+  async function tryResolveInPaths(module, path) {
+    try {
+      return await context.resolve(module, path);
+    } catch (_err) {
+      return null;
+    }
+  }
 
-    if (context.packageDependencyTrace.indexOf(name) > -1) {
+  async function addToDependencyTree(name, packageJsonPath) {
+    const packageInfo = await context.buildPackageInfo(packageJsonPath, context);
+    errors = errors.concat(packageInfo.errors);
+    dependencyTree[name] = packageInfo;
+  }
+
+  function seenPackage(name) {
+    return context.packageDependencyTrace.find(item => item.name === name)
+  }
+
+  for (let dep of dependencies) {
+
+    if (seenPackage(dep.name)) {
       errors.push({
-        message: formatCircularDependenciesError(name, context)
+        message: formatCircularDependenciesError(dep.name, context)
       });
       continue;
     }
 
-    let dependencyPackageJsonPath = '/does/not/exists';
-    try {
-      dependencyPackageJsonPath = await context.resolve(`${name}/package.json`, baseDir);
-    } catch (_err) {
-      missingPackages.push(name);
+    let dependencyPackageJsonPath = await tryResolveInPaths(`${dep.name}/package.json`, baseDir);
+    if (dependencyPackageJsonPath == null) {
+      if (dep.type !== 'conditional') {
+        missingPackages.push(dep.name);
+      }
       continue;
     }
 
-    const packageInfo = await context.buildPackageInfo(dependencyPackageJsonPath, context);
-
-    errors = errors.concat(packageInfo.errors);
-    dependencyTree[name] = packageInfo;
+    await addToDependencyTree(dep.name, dependencyPackageJsonPath);
   }
 
   if (missingPackages.length > 0) {
@@ -304,18 +359,18 @@ async function buildDependencyTree(
   return [dependencyTree, errors];
 }
 
-async function buildPackageInfo(baseDirectory, context) {
-  const dependencyBaseDir = path.dirname(baseDirectory);
-  const packageJson = await readPackageJson(baseDirectory);
+async function buildPackageInfo(packageJsonPath, context) {
+  const dependencyBaseDir = path.dirname(packageJsonPath);
+  const packageJson = await readPackageJson(packageJsonPath);
   const [packageDependencyTree, packageErrors] = await buildDependencyTree(
     dependencyBaseDir,
-    objectToDependencySpecList(
-      packageJson.dependencies,
-      packageJson.peerDependencies
-    ),
+    getDependencies(packageJson),
     {
       ...context,
-      packageDependencyTrace: context.packageDependencyTrace.concat(packageJson.name),
+      packageDependencyTrace: context.packageDependencyTrace.concat({
+        name: packageJson.name,
+        packageDirectory: path.dirname(packageJsonPath),
+      })
     }
   );
   return {
