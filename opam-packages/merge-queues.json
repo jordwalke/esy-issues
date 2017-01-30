@@ -1,0 +1,92 @@
+{
+  "versions": {
+    "0.1.0": {
+      "version": "0.1.0", 
+      "opam": {
+        "url": "https://github.com/mirage/merge-queues/archive/0.1.0.tar.gz", 
+        "checksum": "e132e641b2165ef73ce4ad75ff3b1ae8", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure --prefix $cur__install", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "merge_queues_version": {
+            "scope": "global", 
+            "val": "0.1.0"
+          }, 
+          "merge_queues_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "merge_queues_installed": {
+            "scope": "global", 
+            "val": "true"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/sexplib": "< 113.01.00", 
+        "@opam/comparelib": "*", 
+        "@opam/irmin": "= 0.8.3", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/merge-queues"
+    }, 
+    "0.2.0": {
+      "version": "0.2.0", 
+      "opam": {
+        "url": "https://github.com/mirage/merge-queues/archive/0.2.0.tar.gz", 
+        "checksum": "52a3e3d772290a688be2a16a1316ef34", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure --prefix $cur__install", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "merge_queues_version": {
+            "scope": "global", 
+            "val": "0.2.0"
+          }, 
+          "merge_queues_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "merge_queues_installed": {
+            "scope": "global", 
+            "val": "true"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/git": "*", 
+        "@opam/alcotest": "*", 
+        "@opam/cohttp": "*", 
+        "@opam/irmin": ">= 0.9.3 < 0.10.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/comparelib": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/merge-queues"
+    }
+  }
+}

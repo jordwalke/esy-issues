@@ -1,0 +1,55 @@
+{
+  "versions": {
+    "0.10.7": {
+      "version": "0.10.7", 
+      "opam": {
+        "url": "https://github.com/xapi-project/squeezed/archive/0.10.7.tar.gz", 
+        "checksum": "dbadaf301e924615a894318db8dc34a3", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure --prefix $cur__install", 
+          "make", 
+          "make install BINDIR=$cur__bin ETCDIR=$cur__install/etc", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "xapi_squeezed_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "xapi_squeezed_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "xapi_squeezed_version": {
+            "scope": "global", 
+            "val": "0.10.7"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/xapi-idl": "*", 
+        "@opam/uri": "*", 
+        "@opam/xenstore": "*", 
+        "@opam/cohttp": ">= 0.11.0", 
+        "@opam/xapi-stdext": "*", 
+        "@opam/uuidm": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/re": "*", 
+        "@opam/xenstore_transport": "*", 
+        "@opam/rpc": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/xenctrl": ">= 0.9.20"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/xapi-squeezed"
+    }
+  }
+}

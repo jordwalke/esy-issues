@@ -1,0 +1,149 @@
+{
+  "versions": {
+    "0.1.0": {
+      "version": "0.1.0", 
+      "opam": {
+        "url": "https://github.com/samoht/dog/archive/0.1.0.tar.gz", 
+        "checksum": "8f4d14aaae20054098da3e8b28936fb2", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure --prefix $cur__install --${alcotest_enable:-disable}-tests", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "dog_version": {
+            "scope": "global", 
+            "val": "0.1.0"
+          }, 
+          "dog_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "dog_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/cmdliner": "*", 
+        "@opam/git": ">= 1.4.10", 
+        "@opam/lwt": ">= 2.4.5 < 2.7.0", 
+        "@opam/alcotest": "*", 
+        "@opam/cohttp": "*", 
+        "@opam/irmin": ">= 0.9.3 < 0.9.4", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/re": "*", 
+        "@opam/dolog": ">= 1.0.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.1"
+      }, 
+      "name": "@opam/dog"
+    }, 
+    "0.2.1": {
+      "version": "0.2.1", 
+      "opam": {
+        "url": "https://github.com/samoht/dog/releases/download/0.2.1/dog-0.2.1.tbz", 
+        "checksum": "feef8463ad7fc380a3a433807c87fcac", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml pkg/pkg.ml build --pinned false", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "dog_version": {
+            "scope": "global", 
+            "val": "0.2.1"
+          }, 
+          "dog_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "dog_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/topkg": "*", 
+        "@opam/git": ">= 1.4.10", 
+        "@opam/logs": "*", 
+        "@opam/lwt": ">= 2.4.5 < 2.7.0", 
+        "@opam/cmdliner": "*", 
+        "@opam/irmin-unix": "*", 
+        "@opam/irmin": ">= 0.10.0 <0.12.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/fmt": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.3"
+      }, 
+      "name": "@opam/dog"
+    }, 
+    "0.2.0": {
+      "version": "0.2.0", 
+      "opam": {
+        "url": "https://github.com/samoht/dog/archive/0.2.0.tar.gz", 
+        "checksum": "bfed925e6faf805451176d2cf7411455", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure --prefix $cur__install", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "dog_version": {
+            "scope": "global", 
+            "val": "0.2.0"
+          }, 
+          "dog_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "dog_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/git": ">= 1.4.10", 
+        "@opam/lwt": ">= 2.4.5 < 2.7.0", 
+        "@opam/cmdliner": "*", 
+        "@opam/cohttp": "*", 
+        "@opam/irmin-unix": ">= 0.9.5 <= 0.9.9", 
+        "@opam/irmin": ">= 0.9.5 <= 0.9.9", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/re": "*", 
+        "@opam/dolog": ">= 1.0.0", 
+        "@opam/alcotest": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/dog"
+    }
+  }
+}

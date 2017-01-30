@@ -1,0 +1,104 @@
+{
+  "versions": {
+    "0.9.19": {
+      "version": "0.9.19", 
+      "opam": {
+        "url": "https://github.com/xapi-project/xcp-idl/archive/v0.9.19.tar.gz", 
+        "checksum": "7eccf17204912007947943ff3771f151", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make all", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "xapi_idl_version": {
+            "scope": "global", 
+            "val": "0.9.19"
+          }, 
+          "xapi_idl_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "xapi_idl_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/uri": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/cohttp": "< 0.12.0", 
+        "@opam/rpc": "> 1.4.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/re": "*", 
+        "@opam/message-switch": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/xapi-rrd": "<= 0.9.1", 
+        "@opam/xmlm": "*", 
+        "@opam/xapi-inventory": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/xapi-idl"
+    }, 
+    "0.11.0": {
+      "version": "0.11.0", 
+      "opam": {
+        "url": "https://github.com/xapi-project/xcp-idl/archive/v0.11.0.tar.gz", 
+        "checksum": "65508680a6c3fd740786ed5f61a71a18", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make all", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "xapi_idl_version": {
+            "scope": "global", 
+            "val": "0.11.0"
+          }, 
+          "xapi_idl_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "xapi_idl_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/uri": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/cohttp": ">= 0.15.1", 
+        "@opam/xapi-backtrace": "*", 
+        "@opam/rpc": "> 1.4.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/re": "*", 
+        "@opam/message-switch": "< 0.11.0", 
+        "@opam/xapi-stdext": ">= 0.13.0 < 2.0.0", 
+        "@opam/ocamlfind": "*", 
+        "@opam/xapi-rrd": ">= 0.10.1", 
+        "@opam/xmlm": "*", 
+        "@opam/xapi-inventory": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/xapi-idl"
+    }
+  }
+}

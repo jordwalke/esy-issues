@@ -1,0 +1,60 @@
+{
+  "versions": {
+    "0.7.2": {
+      "version": "0.7.2", 
+      "opam": {
+        "url": "https://github.com/djs55/ocaml-dns-forward/archive/v0.7.2.tar.gz", 
+        "checksum": "460cb45b014c90f3a54a7b3a3e2dcee9", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml pkg/pkg.ml build --pinned false", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "dns_forward_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "dns_forward_version": {
+            "scope": "global", 
+            "val": "0.7.2"
+          }, 
+          "dns_forward_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/topkg": "*", 
+        "@opam/mtime": "*", 
+        "@opam/lwt": ">= 2.6.0", 
+        "@opam/channel": "*", 
+        "@opam/cstruct": ">= 2.2.0", 
+        "@opam/cmdliner": "*", 
+        "@opam/result": "*", 
+        "@opam/alcotest": "*", 
+        "@opam/dns": "*", 
+        "@opam/sexplib": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/astring": "*", 
+        "@opam/ppx_tools": "*", 
+        "@opam/logs": ">= 0.5.0", 
+        "@opam/rresult": "*", 
+        "@opam/ipaddr": "*", 
+        "@opam/fmt": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/mirage-flow": "<= 1.1.0"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.03.0"
+      }, 
+      "name": "@opam/dns-forward"
+    }
+  }
+}

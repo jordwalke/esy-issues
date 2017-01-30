@@ -1,0 +1,250 @@
+{
+  "versions": {
+    "0.6.3": {
+      "version": "0.6.3", 
+      "opam": {
+        "url": "http://forge.ocamlcore.org/frs/download.php/1114/odepack-0.6.3.tar.gz", 
+        "checksum": "8bfc70f1e77c546f6c32093eb155e70e", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "odepack_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "odepack_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "odepack_version": {
+            "scope": "global", 
+            "val": "0.6.3"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 3.12.1"
+      }, 
+      "name": "@opam/odepack"
+    }, 
+    "0.6.2": {
+      "version": "0.6.2", 
+      "opam": {
+        "url": "https://forge.ocamlcore.org/frs/download.php/780/odepack-0.6.2.tar.gz", 
+        "checksum": "372b0843c6bc6c48d857686cd2cc8576", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "odepack_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "odepack_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "odepack_version": {
+            "scope": "global", 
+            "val": "0.6.2"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": "= 3.12.1"
+      }, 
+      "name": "@opam/odepack"
+    }, 
+    "0.6.7": {
+      "version": "0.6.7", 
+      "opam": {
+        "url": "https://github.com/Chris00/ocaml-odepack/releases/download/0.6.7/odepack-0.6.7.tar.gz", 
+        "checksum": "d6f555679bbc3dc38e2270a697912460", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "odepack_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "odepack_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "odepack_version": {
+            "scope": "global", 
+            "val": "0.6.7"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 3.12.1"
+      }, 
+      "name": "@opam/odepack"
+    }, 
+    "0.6.6": {
+      "version": "0.6.6", 
+      "opam": {
+        "url": "https://forge.ocamlcore.org/frs/download.php/1402/odepack-0.6.6.tar.gz", 
+        "checksum": "02522ea07d02bc094d856fc2abd9d26e", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "odepack_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "odepack_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "odepack_version": {
+            "scope": "global", 
+            "val": "0.6.6"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 3.12.1"
+      }, 
+      "name": "@opam/odepack"
+    }, 
+    "0.6.5": {
+      "version": "0.6.5", 
+      "opam": {
+        "url": "http://forge.ocamlcore.org/frs/download.php/1399/odepack-0.6.5.tar.gz", 
+        "checksum": "78fd07f4571bba94126e04899f78337f", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "odepack_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "odepack_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "odepack_version": {
+            "scope": "global", 
+            "val": "0.6.5"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 3.12.1"
+      }, 
+      "name": "@opam/odepack"
+    }, 
+    "0.6.4": {
+      "version": "0.6.4", 
+      "opam": {
+        "url": "http://oasis.ocamlcore.org/dev/dist/odepack/0.6.4/odepack-0.6.4.tar.gz", 
+        "checksum": "8cccdd9ed02d411b12ceec403dfb8de2", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "odepack_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "odepack_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "odepack_version": {
+            "scope": "global", 
+            "val": "0.6.4"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 3.12.1"
+      }, 
+      "name": "@opam/odepack"
+    }
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "versions": {
+    "0.1.0": {
+      "version": "0.1.0", 
+      "opam": {
+        "url": "https://github.com/talex5/mirage-qubes/archive/v0.1.tar.gz", 
+        "checksum": "a7a5672afc6c1f04c976539827f5c1dc", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "mirage_qubes_version": {
+            "scope": "global", 
+            "val": "0.1.0"
+          }, 
+          "mirage_qubes_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "mirage_qubes_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/xen-gnt": "*", 
+        "@opam/logs": "<= 0.4.2", 
+        "@opam/lwt": "*", 
+        "@opam/cstruct": "*", 
+        "@opam/mirage-xen": "*", 
+        "@opam/mirage-types": "< 3.0.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/vchan": ">= 2.0.0", 
+        "@opam/xen-evtchn": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.0"
+      }, 
+      "name": "@opam/mirage-qubes"
+    }, 
+    "0.3.0": {
+      "version": "0.3.0", 
+      "opam": {
+        "url": "https://github.com/talex5/mirage-qubes/archive/v0.3.tar.gz", 
+        "checksum": "02e4bd034b27ba34886f5bf089fdc40c", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "mirage_qubes_version": {
+            "scope": "global", 
+            "val": "0.3.0"
+          }, 
+          "mirage_qubes_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "mirage_qubes_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/xen-gnt": "*", 
+        "@opam/logs": ">= 0.5.0", 
+        "@opam/lwt": "*", 
+        "@opam/cstruct": ">= 1.9.0", 
+        "@opam/mirage-xen": "*", 
+        "@opam/mirage-types": "< 3.0.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/vchan": ">= 2.0.0", 
+        "@opam/xen-evtchn": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.3"
+      }, 
+      "name": "@opam/mirage-qubes"
+    }, 
+    "0.2.0": {
+      "version": "0.2.0", 
+      "opam": {
+        "url": "https://github.com/talex5/mirage-qubes/archive/v0.2.tar.gz", 
+        "checksum": "0ec7df2635d1a657d71c634aa7a848ae", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure", 
+          "make", 
+          "make install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "mirage_qubes_version": {
+            "scope": "global", 
+            "val": "0.2.0"
+          }, 
+          "mirage_qubes_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "mirage_qubes_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/xen-gnt": "*", 
+        "@opam/logs": ">= 0.5.0", 
+        "@opam/lwt": "*", 
+        "@opam/cstruct": "*", 
+        "@opam/mirage-xen": "*", 
+        "@opam/mirage-types": "< 3.0.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/vchan": ">= 2.0.0", 
+        "@opam/xen-evtchn": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.01.0"
+      }, 
+      "name": "@opam/mirage-qubes"
+    }
+  }
+}

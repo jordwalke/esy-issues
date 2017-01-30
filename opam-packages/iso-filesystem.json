@@ -1,0 +1,54 @@
+{
+  "versions": {
+    "0.1.0": {
+      "version": "0.1.0", 
+      "opam": {
+        "url": "https://github.com/jonludlam/ocaml-iso9660/archive/v0.1.tar.gz", 
+        "checksum": "aa3afc0f7f858f352c07425d4b779dcc", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "iso_filesystem_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "iso_filesystem_version": {
+            "scope": "global", 
+            "val": "0.1.0"
+          }, 
+          "iso_filesystem_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/lwt": "*", 
+        "@opam/cstruct": ">= 1.0.1 < 2.0.0", 
+        "@opam/re": "*", 
+        "@opam/camlp4": "*", 
+        "@opam/mirage-types": "< 3.0.0", 
+        "@opam/ounit": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/mirage-block-unix": "*", 
+        "@opam/io-page": "*", 
+        "@opam/stringext": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.01.0"
+      }, 
+      "name": "@opam/iso-filesystem"
+    }
+  }
+}

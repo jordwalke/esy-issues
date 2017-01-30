@@ -1,0 +1,309 @@
+{
+  "versions": {
+    "1.1.1": {
+      "version": "1.1.1", 
+      "opam": {
+        "url": "https://github.com/hammerlab/ketrew/archive/ketrew.1.1.1.tar.gz", 
+        "checksum": "cc774a70bcbcc6d443eba83335591313", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make _oasis", 
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml tools/please.ml generate metadata", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "ketrew_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "ketrew_version": {
+            "scope": "global", 
+            "val": "1.1.1"
+          }, 
+          "ketrew_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/sqlite3": "*", 
+        "@opam/ssl": "*", 
+        "@opam/oasis": "*", 
+        "@opam/pvem": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/sosa": "*", 
+        "@opam/ppx_deriving": "*", 
+        "@opam/cohttp": ">= 0.17.0", 
+        "@opam/nonstd": "*", 
+        "@opam/ppx_blob": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/uri": "*", 
+        "@opam/lwt": "< 2.5.0", 
+        "@opam/yojson": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/trakeva": "*", 
+        "@opam/pvem_lwt_unix": "*", 
+        "@opam/conduit": "*", 
+        "@opam/ppx_deriving_yojson": ">= 2.3.0 <= 2.4.0", 
+        "@opam/ppx_include": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/docout": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/ketrew"
+    }, 
+    "1.1.0": {
+      "version": "1.1.0", 
+      "opam": {
+        "url": "https://github.com/hammerlab/ketrew/archive/ketrew.1.1.0.tar.gz", 
+        "checksum": "1d2b2f919f8407606f48a70579533043", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make _oasis", 
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml tools/please.ml generate metadata", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "ketrew_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "ketrew_version": {
+            "scope": "global", 
+            "val": "1.1.0"
+          }, 
+          "ketrew_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/sqlite3": "*", 
+        "@opam/ssl": "*", 
+        "@opam/oasis": "*", 
+        "@opam/pvem": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/sosa": "*", 
+        "@opam/ppx_deriving": "*", 
+        "@opam/cohttp": "*", 
+        "@opam/nonstd": "*", 
+        "@opam/ppx_blob": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/uri": "*", 
+        "@opam/lwt": "< 2.5.0", 
+        "@opam/yojson": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/trakeva": "*", 
+        "@opam/pvem_lwt_unix": "*", 
+        "@opam/conduit": "*", 
+        "@opam/ppx_deriving_yojson": ">= 2.3.0 <= 2.4.0", 
+        "@opam/ppx_include": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/docout": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/ketrew"
+    }, 
+    "1.0.0": {
+      "version": "1.0.0", 
+      "opam": {
+        "url": "https://github.com/hammerlab/ketrew/archive/ketrew.1.0.0.tar.gz", 
+        "checksum": "6fb5a67ed8c55b359c4aabd18e241b48", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make _oasis", 
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml tools/please.ml generate metadata", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "ketrew_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "ketrew_version": {
+            "scope": "global", 
+            "val": "1.0.0"
+          }, 
+          "ketrew_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/sqlite3": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": "*", 
+        "@opam/ppx_deriving": "*", 
+        "@opam/conduit": "*", 
+        "@opam/uri": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/yojson": "*", 
+        "@opam/ppx_deriving_yojson": ">= 2.3.0 <= 2.4.0", 
+        "@opam/pvem": "*", 
+        "@opam/sosa": "*", 
+        "@opam/nonstd": "*", 
+        "@opam/cohttp": "= 0.17.2", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/pvem_lwt_unix": "*", 
+        "@opam/trakeva": "*", 
+        "@opam/ppx_include": "*", 
+        "@opam/ppx_blob": "*", 
+        "@opam/docout": "*", 
+        "@opam/ssl": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/ketrew"
+    }, 
+    "3.0.0": {
+      "version": "3.0.0", 
+      "opam": {
+        "url": "https://github.com/hammerlab/ketrew/archive/ketrew.3.0.0.tar.gz", 
+        "checksum": "75c53c767c98571488b542fe5337b7dd", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "omake", 
+          "omake install BINDIR=$cur__bin", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "ketrew_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "ketrew_version": {
+            "scope": "global", 
+            "val": "3.0.0"
+          }, 
+          "ketrew_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/sqlite3": "*", 
+        "@opam/omake": "= 9.8.6", 
+        "@opam/pvem": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/postgresql": "*", 
+        "@opam/sosa": "*", 
+        "@opam/ppx_deriving": "*", 
+        "@opam/cohttp": ">= 0.21.0", 
+        "@opam/nonstd": "*", 
+        "@opam/ocamlify": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/uri": "*", 
+        "@opam/lwt": "*", 
+        "@opam/js_of_ocaml": ">= 4.0.0", 
+        "@opam/yojson": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/trakeva": ">= 0.1.0", 
+        "@opam/pvem_lwt_unix": "*", 
+        "@opam/conduit": "*", 
+        "@opam/ppx_deriving_yojson": ">= 3.0.0", 
+        "@opam/ocamlfind": "*", 
+        "@opam/docout": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/ketrew"
+    }, 
+    "2.0.0": {
+      "version": "2.0.0", 
+      "opam": {
+        "url": "https://github.com/hammerlab/ketrew/archive/ketrew.2.0.0.tar.gz", 
+        "checksum": "e25c98359a4cd7de8fb8a3934a902aeb", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "omake", 
+          "omake install BINDIR=$cur__bin", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "ketrew_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "ketrew_version": {
+            "scope": "global", 
+            "val": "2.0.0"
+          }, 
+          "ketrew_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/sqlite3": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/sosa": "*", 
+        "@opam/ppx_deriving": ">= 3.0.0 <= 2.4.0", 
+        "@opam/conduit": "*", 
+        "@opam/uri": "*", 
+        "@opam/omake": "*", 
+        "@opam/yojson": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/pvem": "*", 
+        "@opam/nonstd": "*", 
+        "@opam/cohttp": ">= 0.17.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/pvem_lwt_unix": "*", 
+        "@opam/trakeva": "*", 
+        "@opam/reactiveData": "*", 
+        "@opam/js_of_ocaml": ">= 3.5.0", 
+        "@opam/docout": "*", 
+        "@opam/ssl": "*", 
+        "@opam/ocamlify": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/ketrew"
+    }
+  }
+}

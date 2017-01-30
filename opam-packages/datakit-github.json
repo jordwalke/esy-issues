@@ -1,0 +1,61 @@
+{
+  "versions": {
+    "0.8.1": {
+      "version": "0.8.1", 
+      "opam": {
+        "url": "https://github.com/docker/datakit/releases/download/0.8.1/datakit-0.8.1.tbz", 
+        "checksum": "72c918be8a5b66754e1a29b439605f7c", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml pkg/pkg.ml build --pinned false -n datakit-github", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "datakit_github_version": {
+            "scope": "global", 
+            "val": "0.8.1"
+          }, 
+          "datakit_github_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "datakit_github_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/hvsock": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/topkg": "*", 
+        "@opam/mtime": "*", 
+        "@opam/logs": "*", 
+        "@opam/lwt": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/github-hooks": ">= 0.1.1", 
+        "@opam/github": ">= 2.2.0", 
+        "@opam/asetmap": "*", 
+        "@opam/datakit-server": ">= 0.7.0", 
+        "@opam/nocrypto": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/datakit-client": ">= 0.7.0", 
+        "@opam/asl": "*", 
+        "@opam/win-eventlog": "*", 
+        "@opam/fmt": "*", 
+        "@opam/hex": "*", 
+        "@opam/named-pipe": ">= 0.4.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/conduit": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/datakit-github"
+    }
+  }
+}

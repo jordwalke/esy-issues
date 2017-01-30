@@ -1,0 +1,48 @@
+{
+  "versions": {
+    "0.1.0": {
+      "version": "0.1.0", 
+      "opam": {
+        "url": "https://github.com/cryptosense/multipart-form-data/releases/download/v0.1.0/multipart-form-data-0.1.0.tbz", 
+        "checksum": "1369103590a077f17b7db144b7eeca6b", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml pkg/pkg.ml build --pinned false", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "multipart_form_data_version": {
+            "scope": "global", 
+            "val": "0.1.0"
+          }, 
+          "multipart_form_data_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "multipart_form_data_installed": {
+            "scope": "global", 
+            "val": "true"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/topkg": "*", 
+        "@opam/ppx_deriving": "*", 
+        "@opam/lwt": ">= 2.5.0", 
+        "@opam/alcotest": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/stringext": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.0"
+      }, 
+      "name": "@opam/multipart-form-data"
+    }
+  }
+}

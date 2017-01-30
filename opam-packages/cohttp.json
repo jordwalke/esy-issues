@@ -1,0 +1,59 @@
+{
+  "versions": {
+    "0.21.0": {
+      "version": "0.21.0", 
+      "opam": {
+        "url": "https://github.com/mirage/ocaml-cohttp/archive/v0.21.0.tar.gz", 
+        "checksum": "ce54a6363da401eb774fcad8a47e31a5", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make PREFIX=$cur__install", 
+          "make PREFIX=$cur__install install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "cohttp_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "cohttp_version": {
+            "scope": "global", 
+            "val": "0.21.0"
+          }, 
+          "cohttp_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/conduit": ">= 0.11.0", 
+        "@opam/lwt": "*", 
+        "@opam/uri": ">= 1.9.0", 
+        "@opam/cmdliner": ">= 0.9.4", 
+        "@opam/alcotest": "*", 
+        "@opam/base64": ">= 2.0.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/re": "*", 
+        "@opam/ppx_fields_conv": "*", 
+        "@opam/fieldslib": "*", 
+        "@opam/ppx_sexp_conv": "*", 
+        "@opam/magic-mime": "*", 
+        "@opam/sexplib": "*", 
+        "@opam/ounit": "*", 
+        "@opam/stringext": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/async": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.01.0"
+      }, 
+      "name": "@opam/cohttp"
+    }
+  }
+}

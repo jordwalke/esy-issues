@@ -1,0 +1,60 @@
+{
+  "versions": {
+    "113.33.03": {
+      "version": "113.33.03", 
+      "opam": {
+        "url": "https://ocaml.janestreet.com/ocaml-core/113.33/files/async-113.33.03.tar.gz", 
+        "checksum": "88c14299b3a5aede906a46c89e7f0aec", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "./configure --prefix $cur__install", 
+          "make", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "async_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "async_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "async_version": {
+            "scope": "global", 
+            "val": "113.33.03"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/async_extra": ">= 113.33.03 < 113.34.00", 
+        "@opam/ocamlfind": ">= 1.3.2", 
+        "@opam/async_unix": ">= 113.33.03 < 113.34.00", 
+        "@opam/bin_prot": ">= 113.33.03 < 113.34.00", 
+        "@opam/ppx_bench": ">= 113.33.03 < 113.34.00", 
+        "@opam/fieldslib": ">= 113.33.03 < 113.34.00", 
+        "@opam/ppx_expect": ">= 113.33.03 < 113.34.00", 
+        "@opam/ppx_assert": ">= 113.33.03 < 113.34.00", 
+        "@opam/js-build-tools": ">= 113.33.04 < 113.34.00", 
+        "@opam/typerep": ">= 113.33.03 < 113.34.00", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/ppx_jane": ">= 113.33.03 < 113.34.00", 
+        "@opam/ppx_driver": ">= 113.33.03 < 113.34.00", 
+        "@opam/variantslib": ">= 113.33.03 < 113.34.00", 
+        "@opam/core": ">= 113.33.03 < 113.34.00", 
+        "@opam/sexplib": ">= 113.33.03 < 113.34.00", 
+        "@opam/ppx_inline_test": ">= 113.33.03 < 113.34.00", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/async_kernel": ">= 113.33.03 < 113.34.00"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": "= 4.02.3"
+      }, 
+      "name": "@opam/async"
+    }
+  }
+}

@@ -1,0 +1,423 @@
+{
+  "versions": {
+    "0.7.6": {
+      "version": "0.7.6", 
+      "opam": {
+        "url": "http://oasis.ocamlcore.org/dev/dist/weberizer/0.7.6/weberizer-0.7.6.tar.gz", 
+        "checksum": "f9c5cfaec620ea245649a9e1da48f137", 
+        "files": [
+          {
+            "content": "bin: [\n  \"?_build/src/app/weberizer_compile.byte\" {\"weberizer\"}\n  \"?_build/src/app/weberizer_compile.native\" {\"weberizer\"}\n]\n", 
+            "name": "weberizer.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.7.6"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.6.2": {
+      "version": "0.6.2", 
+      "opam": {
+        "url": "https://github.com/downloads/Chris00/weberizer/weberizer-0.6.2.tar.gz", 
+        "checksum": "3bb68fbb06d672dd4094b156e31db652", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.6.2"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": "= 0.3.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.6.1": {
+      "version": "0.6.1", 
+      "opam": {
+        "url": "http://oasis.ocamlcore.org/dev/dist/weberizer/0.6.1/weberizer-0.6.1.tar.gz", 
+        "checksum": "066c96944578d3ec8d808e9e70629b2d", 
+        "files": [
+          {
+            "content": "bin: [\"_build/src/weberizer_compile.native\" {\"weberizer_compile\"}]\n", 
+            "name": "weberizer.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "rm setup.ml", 
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.6.1"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": ">= 0.3.0 < 0.4.7", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "= 3.6.0"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.7.5": {
+      "version": "0.7.5", 
+      "opam": {
+        "url": "http://oasis.ocamlcore.org/dev/dist/weberizer/0.7.5/weberizer-0.7.5.tar.gz", 
+        "checksum": "971d654301d75041694b9ebfb96d8668", 
+        "files": [
+          {
+            "content": "bin: [\n  \"?_build/src/app/weberizer_compile.byte\" {\"weberizer\"}\n  \"?_build/src/app/weberizer_compile.native\" {\"weberizer\"}\n]\n", 
+            "name": "weberizer.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.7.5"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.7.2": {
+      "version": "0.7.2", 
+      "opam": {
+        "url": "https://github.com/Chris00/weberizer/releases/download/0.7.2/weberizer-0.7.2.tar.gz", 
+        "checksum": "0d87bef093c8688c4040bc94e84aadcf", 
+        "files": [
+          {
+            "content": "bin: [\n  \"?_build/src/app/weberizer_compile.byte\" {\"weberizer\"}\n  \"?_build/src/app/weberizer_compile.native\" {\"weberizer\"}\n]\n", 
+            "name": "weberizer.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.7.2"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.7.3": {
+      "version": "0.7.3", 
+      "opam": {
+        "url": "https://github.com/Chris00/weberizer/archive/0.7.3.tar.gz", 
+        "checksum": "5a6294f816e5b571d0e7eac77c20dd6b", 
+        "files": [
+          {
+            "content": "bin: [\n  \"?_build/src/app/weberizer_compile.byte\" {\"weberizer\"}\n  \"?_build/src/app/weberizer_compile.native\" {\"weberizer\"}\n]\n", 
+            "name": "weberizer.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.7.3"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": "= 0.3.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.6.5": {
+      "version": "0.6.5", 
+      "opam": {
+        "url": "https://github.com/downloads/Chris00/weberizer/weberizer-0.6.5.tar.gz", 
+        "checksum": "d146ad2a11bfe718e94b9d15512dec66", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.6.5"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": "= 0.3.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.7.1": {
+      "version": "0.7.1", 
+      "opam": {
+        "url": "https://github.com/Chris00/weberizer/tarball/0.7.1", 
+        "checksum": "42a1aeba79b79282d56a548bdef4f7df", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "oasis setup", 
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.7.1"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": "= 0.3.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }, 
+    "0.7.7": {
+      "version": "0.7.7", 
+      "opam": {
+        "url": "https://github.com/Chris00/weberizer/releases/download/0.7.7/weberizer-0.7.7.tar.gz", 
+        "checksum": "bf67574e19f0ddd07c6ffd4f411b9d1a", 
+        "files": [
+          {
+            "content": "bin: [\n  \"?_build/src/app/weberizer_compile.byte\" {\"weberizer\"}\n  \"?_build/src/app/weberizer_compile.native\" {\"weberizer\"}\n]\n", 
+            "name": "weberizer.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "weberizer_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "weberizer_version": {
+            "scope": "global", 
+            "val": "0.7.7"
+          }, 
+          "weberizer_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "substs": "esy-ocaml/substs", 
+        "@opam/ocamlfind": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/ocamlnet": "*"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/weberizer"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "versions": {
+    "0.3.0": {
+      "version": "0.3.0", 
+      "opam": {
+        "url": "https://github.com/ygrek/ocaml-gdb/archive/0.3.tar.gz", 
+        "checksum": "a9f44ae88ef35704b0deb3aa37b2a5ed", 
+        "files": [
+          {
+            "content": "bin: [\n  \"?_build/src/rmp.native\" {\"rmp\"}\n]\n", 
+            "name": "gdb.install"
+          }
+        ]
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --${lambda_term_enable:-disable}-build-rmp --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "gdb_version": {
+            "scope": "global", 
+            "val": "0.3.0"
+          }, 
+          "gdb_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "gdb_installed": {
+            "scope": "global", 
+            "val": "true"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/oasis": ">= 0.4.0", 
+        "@opam/ppx_deriving": ">= 1.0.0", 
+        "@opam/lwt": ">= 2.4.6", 
+        "@opam/extlib": "*", 
+        "@opam/cppo": "*", 
+        "@opam/lambda-term": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/extlib-compat": "*", 
+        "@opam/ppx_tools": ">= 0.99.1", 
+        "@opam/menhir": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.0 < 4.03.0"
+      }, 
+      "name": "@opam/gdb"
+    }
+  }
+}

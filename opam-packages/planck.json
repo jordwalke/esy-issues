@@ -1,0 +1,236 @@
+{
+  "versions": {
+    "2.1.0": {
+      "version": "2.1.0", 
+      "opam": {
+        "url": "https://bitbucket.org/camlspotter/planck/get/2.1.0.tar.gz", 
+        "checksum": "38cf144fc2c150ff621be397ce65550b", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "planck_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "planck_version": {
+            "scope": "global", 
+            "val": "2.1.0"
+          }, 
+          "planck_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/type_conv": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/omake": "*", 
+        "@opam/pa_monad_custom": "*", 
+        "@opam/sexplib": ">= 108.07.00 < 113.01.00", 
+        "@opam/spotlib": ">= 2.1.2 < 2.2.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.00.1 < 4.03.0"
+      }, 
+      "name": "@opam/planck"
+    }, 
+    "2.1.1": {
+      "version": "2.1.1", 
+      "opam": {
+        "url": "https://bitbucket.org/camlspotter/planck/get/2.1.1.tar.gz", 
+        "checksum": "0863e39c85d0d12211ff0fed44906017", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "planck_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "planck_version": {
+            "scope": "global", 
+            "val": "2.1.1"
+          }, 
+          "planck_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/ocamlgraph": ">= 1.8.2", 
+        "@opam/type_conv": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/omake": "*", 
+        "@opam/pa_monad_custom": "*", 
+        "@opam/sexplib": ">= 108.07.00 < 113.01.00", 
+        "@opam/spotlib": ">= 2.2.0 < 3.0.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.00.1 < 4.03.0"
+      }, 
+      "name": "@opam/planck"
+    }, 
+    "1.0.1": {
+      "version": "1.0.1", 
+      "opam": {
+        "url": "https://bitbucket.org/camlspotter/planck/get/1.0.1.tar.gz", 
+        "checksum": "e9d371a0d0e5657198d853837ec9b66c", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "planck_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "planck_version": {
+            "scope": "global", 
+            "val": "1.0.1"
+          }, 
+          "planck_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/type_conv": "*", 
+        "@opam/camlp4": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/sexplib": ">= 5.2.1 < 113.01.00", 
+        "@opam/spotlib": "= 1.0.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": "= 3.12.1"
+      }, 
+      "name": "@opam/planck"
+    }, 
+    "2.0.1": {
+      "version": "2.0.1", 
+      "opam": {
+        "url": "https://bitbucket.org/camlspotter/planck/get/2.0.1.tar.gz", 
+        "checksum": "a19d9d44d491de4bc98e51fc57e07d74", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "planck_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "planck_version": {
+            "scope": "global", 
+            "val": "2.0.1"
+          }, 
+          "planck_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/type_conv": "*", 
+        "@opam/camlp4": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/omake": "*", 
+        "@opam/sexplib": ">= 108.07.00 < 113.01.00", 
+        "@opam/spotlib": "= 2.0.1", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.00.1 < 4.03.0"
+      }, 
+      "name": "@opam/planck"
+    }, 
+    "2.2.0": {
+      "version": "2.2.0", 
+      "opam": {
+        "url": "https://bitbucket.org/camlspotter/planck/get/2.2.0.tar.gz", 
+        "checksum": "e31529014eb8d5134b8ad3ebdad197bc", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "ocaml setup.ml -configure --prefix $cur__install", 
+          "ocaml setup.ml -build", 
+          "ocaml setup.ml -install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "planck_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "planck_version": {
+            "scope": "global", 
+            "val": "2.2.0"
+          }, 
+          "planck_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ocamlfind": "*", 
+        "@opam/ocamlgraph": ">= 1.8.2", 
+        "@opam/omake": "*", 
+        "@opam/camlp4": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/ppx_sexp_conv": "*", 
+        "@opam/sexplib": ">= 113.33.00", 
+        "@opam/ppx_monadic": "*", 
+        "@opam/spotlib": ">= 3.0.0", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.3"
+      }, 
+      "name": "@opam/planck"
+    }
+  }
+}

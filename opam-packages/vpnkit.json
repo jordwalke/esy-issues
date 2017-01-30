@@ -1,0 +1,69 @@
+{
+  "versions": {
+    "0.0.0": {
+      "version": "0.0.0", 
+      "opam": {
+        "url": "https://github.com/djs55/vpnkit/archive/v0.0.0.tar.gz", 
+        "checksum": "9bd05f1339ba9d48a119ee394b701c8f", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make", 
+          "make install BINDIR=$cur__bin", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "vpnkit_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "vpnkit_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }, 
+          "vpnkit_version": {
+            "scope": "global", 
+            "val": "0.0.0"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/oasis": "*", 
+        "@opam/dns": "*", 
+        "@opam/pcap-format": ">= 0.4.0", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/uwt": "= 0.0.3", 
+        "@opam/win-eventlog": "*", 
+        "@opam/hashcons": "= 1.0.1", 
+        "@opam/charrua-core": ">= 0.3.0", 
+        "@opam/alcotest": "*", 
+        "@opam/fd-send-recv": "*", 
+        "@opam/astring": "*", 
+        "@opam/fmt": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin", 
+        "@opam/lwt": "< 2.7.0", 
+        "@opam/result": "*", 
+        "@opam/cmdliner": "*", 
+        "@opam/datakit-server": "*", 
+        "@opam/mirage-flow": ">= 1.1.0", 
+        "@opam/asl": "*", 
+        "@opam/tar-format": "*", 
+        "@opam/named-pipe": ">= 0.4.0", 
+        "@opam/ipaddr": "*", 
+        "@opam/hvsock": "*", 
+        "@opam/dns-forward": "*", 
+        "@opam/logs": "*", 
+        "@opam/mirage-types-lwt": "< 3.0.0", 
+        "@opam/ocamlfind": "*", 
+        "@opam/tcpip": ">= 2.8.0 < 3.0.0"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.2.3"
+      }, 
+      "name": "@opam/vpnkit"
+    }
+  }
+}

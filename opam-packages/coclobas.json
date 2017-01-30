@@ -1,0 +1,60 @@
+{
+  "versions": {
+    "0.0.0": {
+      "version": "0.0.0", 
+      "opam": {
+        "url": "https://github.com/hammerlab/coclobas/archive/0.0.0.tar.gz", 
+        "checksum": "2ca556f40657af9487dc5e6bbde1e7ec", 
+        "files": []
+      }, 
+      "esy": {
+        "buildsInSource": true, 
+        "build": [
+          "make byte", 
+          "make native", 
+          "make META", 
+          "make coclobas.install", 
+          "(opam-installer --prefix=$cur__install || true)"
+        ], 
+        "exportedEnv": {
+          "coclobas_version": {
+            "scope": "global", 
+            "val": "0.0.0"
+          }, 
+          "coclobas_installed": {
+            "scope": "global", 
+            "val": "true"
+          }, 
+          "coclobas_enable": {
+            "scope": "global", 
+            "val": "enable"
+          }
+        }
+      }, 
+      "dependencies": {
+        "@opam/ketrew": "*", 
+        "@opam/ocamlfind": "*", 
+        "@opam/sosa": "*", 
+        "@opam/ppx_deriving": "*", 
+        "@opam/lwt": "*", 
+        "@opam/ppx_deriving_yojson": ">= 3.0.0", 
+        "@opam/cmdliner": "*", 
+        "@opam/solvuu-build": "*", 
+        "@opam/cohttp": "*", 
+        "@opam/nonstd": "*", 
+        "@opam/uuidm": "*", 
+        "substs": "esy-ocaml/substs", 
+        "@opam/trakeva": "*", 
+        "@opam/odate": "*", 
+        "@opam/pvem_lwt_unix": "*", 
+        "@opam/base64": "*", 
+        "opam-installer-bin": "esy-ocaml/opam-installer-bin"
+      }, 
+      "scripts": {}, 
+      "peerDependencies": {
+        "ocaml": ">= 4.02.3"
+      }, 
+      "name": "@opam/coclobas"
+    }
+  }
+}
