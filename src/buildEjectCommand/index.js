@@ -314,7 +314,10 @@ function buildEjectCommand(
             'esy_build__key': buildHash,
             'esy_build__source': packageInfo.source,
             'esy_build__source_type': packageInfo.sourceType,
-            'esy_build__command': buildCommand || 'true',
+            'esy_build__command': {
+              value: buildCommand || 'true',
+              disableExpand: true
+            },
             'esy_build__source_root': sourcePath(packageInfo),
             'esy_build__install': installPath(packageInfo),
           },
@@ -429,8 +432,7 @@ function renderEnv(groups: Array<EnvironmentGroup>): string {
   let env = flattenArray(groups.map(group => group.envVars));
   return env
     .filter(env => env.value != null)
-    // $FlowFixMe: make sure env.value is refined above
-    .map(env => `export ${env.name}="${env.value}";`)
+    .map(env => `export ${env.name}="${(env.value: any)}";`)
     .join('\n');
 }
 
