@@ -10,18 +10,25 @@ import config
 BOOTSTRAP_OPAM_ENV = """
 #!/usr/bin/env bash
 
-try-enable () {
+try-query-ocamlfind () {
     ocamlfind query "$1" 2>&1 > /dev/null
 
     if [ "$?" -ne 0 ]; then
-        echo "disable"
+        echo "false"
     else
-        echo "enable"
+        echo "true"
     fi
 }
 
-export base_unix_enable=`try-enable unix`
-export base_threads_enable=`try-enable threads`
+if [ `try-query-ocamlfind unix` == "true" ]; then
+    export base_unix_enable="enable"
+    export base_unix_installed="true"
+fi
+
+if [ `try-query-ocamlfind threads` == "true" ]; then
+    export base_threads_enable="enable"
+    export base_threads_installed="true"
+fi
 """.strip()
 
 def generate_package_json(name, version, directory):
