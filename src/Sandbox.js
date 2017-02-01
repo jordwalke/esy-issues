@@ -393,7 +393,7 @@ function formatMissingPackagesError(missingPackages, context) {
     : '';
   return outdent`
     Cannot resolve ${packagesMessage}${extraPackagesMessage} packages
-      At ${context.packageDependencyTrace.join(' -> ')}
+      at ${context.packageDependencyTrace.map(p => p.name).join(' -> ')}
       Did you forget to run "esy install" command?
   `
 }
@@ -401,7 +401,7 @@ function formatMissingPackagesError(missingPackages, context) {
 function formatCircularDependenciesError(dependency, context) {
   return outdent`
     Circular dependency "${dependency} detected
-      At ${context.packageDependencyTrace.join(' -> ')}
+      at ${context.packageDependencyTrace.map(p => p.name).join(' -> ')}
   `
 }
 
