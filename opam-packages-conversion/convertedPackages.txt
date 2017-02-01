@@ -3,8 +3,6 @@
 ./forks/ocamlfind esy/1.7.1 origin/master
 
 # Direct convertation
-base-threads base
-base-unix base
 base-bytes base
 biniou 1.0.9
 camomile 0.8.5
@@ -209,8 +207,6 @@ base-bytes base
 base-metaocaml-ocamlfind base
 base-no-ppx base
 base-ocamlbuild base
-base-threads base
-base-unix base
 base 0.1.alpha1
 base58 0.1.2
 base64 1.0.0 1.1.0 2.0.0 2.1.2
