@@ -25,6 +25,8 @@ ESY_EXTRA_DEP = {
 }
 
 OPAM_DEPOPT_BLACKLIST = {
+    "base-unix",
+    "base-threads",
     "conf-libev",
     "lablgtk",
     "ssl",
