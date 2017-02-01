@@ -159,8 +159,11 @@ async function applyPatch(packageJson: PackageJson, target: string) {
 
 async function putFiles(packageJson: PackageJson, target: string) {
   if (packageJson.opam.files) {
-    await Promise.all(packageJson.opam.files.map(file =>
-      fs.writeFile(path.join(target, file.name), file.content, 'utf8')));
+    await Promise.all(packageJson.opam.files.map(async file => {
+      let filename = path.join(target, file.name);
+      await mkdirp(path.dirname(filename));
+      await fs.writeFile(filename, file.content, 'utf8');
+    }));
   }
 }
 
