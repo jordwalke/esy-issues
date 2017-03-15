@@ -1,4 +1,4 @@
-#This Repo Has Been Moved To https://github.com/reasonml/esy
+# This Repo Has Been Moved To https://github.com/reasonml/esy
 
 That repo is the latest development, and this repo is only here for historical purposes.
 That new repo is mostly the same as this repo, but as a rebase on top of `yarn`.
@@ -29,7 +29,7 @@ dependency graph, running their `build` commands, and running each dependency's
 `build` command in an environment computed from the `esy` command, for that
 one package.
 
-The environments computed by `esy` are with respect to (sandbox root, `cur`
+The environments computed by `esy` are with respect to (sandbox root, `cur` (current)
 package), where the sandbox root is the top level package we're building
 everything for, and `cur` package is one of the transitive dependencies.
 Running `esy` in a directory is like printing the environment as if `pwd` was
