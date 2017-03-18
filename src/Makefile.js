@@ -8,7 +8,7 @@
 const outdent = require('outdent');
 
 export type Env = {
-  [name: string]: ?string;
+  [name: string]: ?string | {value: ?string; disableExpand?: boolean};
 };
 
 export type MakeRule = {
@@ -134,11 +134,24 @@ function renderMakeRule(rule) {
   }
 }
 
-function renderMakeRuleEnv(env) {
-  let lines = [];
+function renderMakeRuleEnv(env: ?Env) {
+  const lines = [];
   for (let k in env) {
-    if (env[k] != null) {
-      lines.push(`\texport ${k}="${env[k]}";`);
+    let item = env[k];
+    if (item == null) {
+      continue;
+    }
+    if (typeof item === 'string') {
+      item = {value: item, disableExpand: false};
+    }
+    const {value, disableExpand} = item;
+    if (value == null) {
+      continue;
+    }
+    if (disableExpand) {
+      lines.push(`\texport ${k}='${value}';`);
+    } else {
+      lines.push(`\texport ${k}="${value}";`);
     }
   }
   return lines.join('\\\n');

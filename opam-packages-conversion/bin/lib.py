@@ -7,6 +7,30 @@ import collections
 
 import config
 
+BOOTSTRAP_OPAM_ENV = """
+#!/usr/bin/env bash
+
+try-query-ocamlfind () {
+    ocamlfind query "$1" 2>&1 > /dev/null
+
+    if [ "$?" -ne 0 ]; then
+        echo "false"
+    else
+        echo "true"
+    fi
+}
+
+if [ `try-query-ocamlfind unix` == "true" ]; then
+    export base_unix_enable="enable"
+    export base_unix_installed="true"
+fi
+
+if [ `try-query-ocamlfind threads` == "true" ]; then
+    export base_threads_enable="enable"
+    export base_threads_installed="true"
+fi
+""".strip()
+
 def generate_package_json(name, version, directory):
     opam_file = os.path.join(directory, 'opam')
     files_directory = os.path.join(directory, 'files')
@@ -267,7 +291,7 @@ def generate_package_json(name, version, directory):
         if dep == "" or dep in config.OPAM_DEPOPT_BLACKLIST:
             continue
         npm_range = opamRangeToNpmRange(range)
-        packageJSON["dependencies"][scoped(dep)] = npm_range
+        packageJSON.setdefault('conditionalDependencies', {})[scoped(dep)] = npm_range
 
     g = re.findall(r"ocaml-version ([!=<>]+.*?\".*?\")", d["available"])
     if g:
@@ -279,8 +303,10 @@ def generate_package_json(name, version, directory):
     opamINFO = {
         'url': package_url,
         'checksum': package_checksum,
-        'files': [],
+        'files': [
+        ],
     }
+
 
     if os.path.exists(files_directory):
         for filename in os.listdir(files_directory):
@@ -315,5 +341,16 @@ def generate_package_json(name, version, directory):
 
     if name in config.OVERRIDE and 'exportedEnv' in config.OVERRIDE[name]:
         packageJSON['esy']['exportedEnv'].update(config.OVERRIDE[name]['exportedEnv'])
+
+
+    # put ocamlfind in deps which is used to bootstrap opam env, see
+    # BOOTSTRAP_OPAM_ENV for details
+    if name not in {'ocamlfind', 'conf-m4'}:
+        packageJSON['dependencies']['@opam/ocamlfind'] = '*'
+        opamINFO['files'].append({
+            'name': '_esy/bootstrap-opam-env',
+            'content': BOOTSTRAP_OPAM_ENV
+        })
+        packageJSON['esy']['build'] = ['source ./_esy/bootstrap-opam-env'] + packageJSON['esy']['build']
 
     return packageJSON

@@ -16,6 +16,7 @@ import ndjson from 'ndjson';
 import bole from 'bole';
 import mkdirp from 'mkdirp-then';
 import * as pnpm from '@andreypopp/pnpm';
+import linkDependency from '@andreypopp/pnpm/lib/install/linkDependency';
 
 import {hash} from '../Utility';
 import initLogger from './logger';
@@ -109,7 +110,44 @@ const installationSpec = {
         await applyPatch(packageJson, target);
       }
     },
+
+    installDidComplete: async (installedPackages) => {
+      if (!installedPackages) {
+        return;
+      }
+      await linkConditionalDependencies(installedPackages);
+    },
   }
+}
+
+async function linkConditionalDependencies(installedPackages) {
+  const groupedPkgs = {}
+
+  Object.keys(installedPackages).forEach(id => {
+    const pkgData = installedPackages[id]
+    if (!pkgData.pkg.version) {
+      return;
+    }
+    const pkgName = pkgData.pkg.name
+    groupedPkgs[pkgName] = groupedPkgs[pkgName] || {}
+    groupedPkgs[pkgName][pkgData.pkg.version] = pkgData
+  })
+
+  await Promise.all(Object.keys(installedPackages).map(async id => {
+    const pkgData = installedPackages[id];
+    const {conditionalDependencies} = pkgData.pkg;
+    if (conditionalDependencies == null) {
+      return;
+    }
+    await Promise.all(Object.keys(conditionalDependencies).map(async name => {
+      const requirement = conditionalDependencies[name];
+      const versions = Object.keys(groupedPkgs[name] || {});
+      const version = semver.maxSatisfying(versions, requirement, true);
+      if (version) {
+        await linkDependency(groupedPkgs[name][version], pkgData)
+      }
+    }))
+  }))
 }
 
 async function applyPatch(packageJson: PackageJson, target: string) {
@@ -122,8 +160,11 @@ async function applyPatch(packageJson: PackageJson, target: string) {
 
 async function putFiles(packageJson: PackageJson, target: string) {
   if (packageJson.opam.files) {
-    await Promise.all(packageJson.opam.files.map(file =>
-      fs.writeFile(path.join(target, file.name), file.content, 'utf8')));
+    await Promise.all(packageJson.opam.files.map(async file => {
+      let filename = path.join(target, file.name);
+      await mkdirp(path.dirname(filename));
+      await fs.writeFile(filename, file.content, 'utf8');
+    }));
   }
 }
 
